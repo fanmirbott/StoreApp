@@ -8,12 +8,10 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            Stack(
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
               children: [
                 Positioned(
                   top: 60.h,
@@ -24,8 +22,13 @@ class OnboardingPage extends StatelessWidget {
                     height: 204.h,
                   ),
                 ),
-                Image.asset(
-                  'assets/appImg/element1.png',
+                Positioned(
+                  top: 100,
+                  left: 0,
+                  right: 0,
+                  child: Image.asset(
+                    'assets/appImg/element1.png',
+                  ),
                 ),
                 Positioned(
                   bottom: 0,
@@ -43,10 +46,10 @@ class OnboardingPage extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          OnBoardingBottomNavBar(),
+        ],
       ),
-      bottomNavigationBar: OnBoardingBottomNavBar(),
     );
   }
 }

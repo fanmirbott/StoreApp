@@ -6,11 +6,11 @@ import 'package:storeapp/core/utils/colors.dart';
 class AuthButtonOtpSend extends StatelessWidget {
   const AuthButtonOtpSend({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.text,
     required this.backgroundColor,
   });
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String text;
   final Color backgroundColor;
 

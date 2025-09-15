@@ -1,65 +1,88 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:storeapp/core/utils/colors.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:storeapp/core/utils/icons.dart';
 
 class TextFieldAndText extends StatelessWidget {
+  final TextEditingController controller;
+  final String text;
+  final String hintText;
+  final String? errorText;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final Function(String)? onChanged;
+
   const TextFieldAndText({
     super.key,
     required this.controller,
     required this.text,
     required this.hintText,
-    this.suffixIcon,
+    this.errorText,
     this.obscureText = false,
+    this.suffixIcon,
+    this.onChanged,
   });
-
-  final String text;
-  final String hintText;
-  final Widget? suffixIcon;
-  final TextEditingController controller;
-  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
+    bool isValid = errorText == null && controller.text.isNotEmpty;
+
     return Column(
-      spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           text,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16.sp,
-            color: AppColors.primary,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
+        const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: obscureText,
-          obscuringCharacter: "*",
+          onChanged: onChanged,
           decoration: InputDecoration(
+            hintText: hintText,
+            errorText: errorText,
+            suffixIcon:
+                suffixIcon ??
+                (isValid
+                    ? SvgPicture.asset(
+                        AppIcons.correct,
+                        width: 24.w,
+                        height: 24.h,
+                        fit: BoxFit.scaleDown,
+                      )
+                    : (errorText != null
+                          ? SvgPicture.asset(
+                              AppIcons.warningCircle,
+                              width: 24.w,
+                              height: 24.h,
+                              fit: BoxFit.scaleDown,
+                            )
+                          : null)),
             enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide(
-                color: AppColors.primary100,
+                color: errorText != null
+                    ? Colors.red
+                    : (isValid ? Colors.green : Colors.grey),
               ),
             ),
             focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide(
-                color: AppColors.primary100,
+                color: errorText != null
+                    ? Colors.red
+                    : (isValid ? Colors.green : Colors.blue),
               ),
             ),
-            disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.primary100,
-              ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: const BorderSide(color: Colors.red),
             ),
-            hintText: hintText,
-            hintStyle: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.primary400
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: const BorderSide(color: Colors.red),
             ),
-            suffixIcon: suffixIcon,
           ),
         ),
       ],
