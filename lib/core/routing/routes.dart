@@ -9,4 +9,5 @@ class Routes {
   static const forgotPasswordPage = '/forgotPasswordPage';
   static const verificationPage = '/verificationPage';
   static const resetPasswordPage = '/resetPasswordPage';
+  static const splash = '/splash';
 }

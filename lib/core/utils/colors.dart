@@ -1,4 +1,4 @@
-import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 class AppColors{
   static const primary = Color(0xFF1A1A1A);
@@ -8,4 +8,5 @@ class AppColors{
   static const primary100 = Color(0xFFE6E6E6);
   static const primary200 = Color(0xFFCCCCCC);
   static const primary400 = Color(0xFF999999);
+  static const transparent = Colors.transparent;
 }

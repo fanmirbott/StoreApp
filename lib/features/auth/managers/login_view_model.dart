@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/repositories/login_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
@@ -17,7 +18,6 @@ class LoginViewModel extends ChangeNotifier {
   Future<void> login(String login, String password) async {
     _isLoading = true;
     _errorMessage = null;
-    _token = null;
     notifyListeners();
 
     final result = await _repository.login(login, password);
@@ -25,11 +25,12 @@ class LoginViewModel extends ChangeNotifier {
     result.fold(
           (error) {
         _errorMessage = error.toString();
-        return null;
       },
-          (data) {
+          (data) async {
         _token = data;
-        return null;
+        // Tokenni SharedPreferences-ga saqlaymiz
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("token", _token!);
       },
     );
 

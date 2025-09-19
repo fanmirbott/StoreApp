@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:storeapp/core/routing/routes.dart';
+import 'package:storeapp/core/utils/colors.dart';
+import 'package:storeapp/features/auth/widgets/auth_button_otp_send.dart';
 
 class VerificationPage extends StatefulWidget {
   final String email;
@@ -11,10 +15,14 @@ class VerificationPage extends StatefulWidget {
 
 class _VerificationPageState extends State<VerificationPage> {
   static const int otpLength = 4;
-  final List<TextEditingController> controllers =
-  List.generate(otpLength, (_) => TextEditingController());
-  final List<FocusNode> focusNodes =
-  List.generate(otpLength, (_) => FocusNode());
+  final List<TextEditingController> controllers = List.generate(
+    otpLength,
+    (_) => TextEditingController(),
+  );
+  final List<FocusNode> focusNodes = List.generate(
+    otpLength,
+    (_) => FocusNode(),
+  );
 
   void checkOtp() {
     final code = controllers.map((c) => c.text).join();
@@ -22,7 +30,6 @@ class _VerificationPageState extends State<VerificationPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("OTP entered: $code")),
       );
-      // Bu yerda backendga OTP yuborish lozim
     }
   }
 
@@ -114,23 +121,13 @@ class _VerificationPageState extends State<VerificationPage> {
                 ),
               ],
             ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: checkOtp,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text(
-                  "Continue",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
+           Spacer(),
+            AuthButtonOtpSend(
+              onTap: (){
+                context.push(Routes.resetPasswordPage);
+              },
+              text: 'Continue',
+              backgroundColor: AppColors.primary,
             ),
             const SizedBox(height: 24),
           ],

@@ -11,10 +11,11 @@ import 'package:storeapp/features/auth/pages/sign_up_page.dart';
 import 'package:storeapp/features/auth/pages/verification_page.dart';
 import 'package:storeapp/features/home/pages/home_page.dart';
 import 'package:storeapp/features/obBoarding/pages/onboarding_page.dart';
+import 'package:storeapp/features/obBoarding/pages/splash.dart';
 import 'package:storeapp/features/obBoarding/pages/splash_page.dart';
 
 final router = GoRouter(
-  initialLocation: Routes.forgotPasswordPage,
+  initialLocation: Routes.homePage,
   routes: [
     ShellRoute(
       builder: (context, state, child) => ChangeNotifierProvider(
@@ -60,5 +61,7 @@ final router = GoRouter(
       path: Routes.homePage,
       builder: (context, state) => HomePage(),
     ),
+    GoRoute(path: Routes.splash,
+    builder: (context, state) => Splash(),)
   ],
 );
