@@ -7,7 +7,6 @@ class ProductRepository {
 
   ProductRepository({required ApiClient client}) : _client = client;
 
-  // 🔹 Mahsulotlarni olish
   Future<Result<List<ProductModel>>> getProducts() async {
     final result = await _client.get<List<dynamic>>(
       '/products/list',
@@ -27,7 +26,6 @@ class ProductRepository {
     );
   }
 
-  // 🔹 Mahsulotni saqlanganlarga qo‘shish
   Future<Result<void>> saveProduct(int productId) async {
     final result = await _client.post<Map<String, dynamic>>(
       '/products/saved-products',
@@ -40,7 +38,6 @@ class ProductRepository {
     );
   }
 
-  // 🔹 Saqlangan mahsulotlarni olish
   Future<Result<List<ProductModel>>> getSavedProducts() async {
     final result = await _client.get<List<dynamic>>(
       '/products/saved-products',

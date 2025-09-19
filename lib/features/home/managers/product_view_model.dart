@@ -10,7 +10,6 @@ class ProductViewModel extends ChangeNotifier {
 
   bool isLoading = false;
   List<ProductModel> products = [];
-  List<ProductModel> savedProducts = [];
   String? errorMessage;
 
   Future<void> getProducts() async {
@@ -32,44 +31,5 @@ class ProductViewModel extends ChangeNotifier {
 
     isLoading = false;
     notifyListeners();
-  }
-
-  // 🔹 Saqlangan mahsulotlarni olish
-  Future<void> getSavedProducts() async {
-    final result = await _repository.getSavedProducts();
-
-    result.fold(
-          (error) {
-        savedProducts = [];
-        errorMessage = error.toString();
-      },
-          (data) {
-        savedProducts = data;
-      },
-    );
-
-    notifyListeners();
-  }
-
-  // 🔹 Like bosilganda mahsulotni saqlash
-  Future<void> toggleSave(int productId) async {
-    final result = await _repository.saveProduct(productId);
-
-    result.fold(
-          (error) {
-        errorMessage = error.toString();
-      },
-          (_) async {
-        // Saqlanganlar ro‘yxatini qayta olish
-        await getSavedProducts();
-      },
-    );
-
-    notifyListeners();
-  }
-
-  // 🔹 Mahsulot saqlanganligini tekshirish
-  bool isProductSaved(int productId) {
-    return savedProducts.any((p) => p.id == productId);
   }
 }
