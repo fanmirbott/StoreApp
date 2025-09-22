@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:storeapp/data/models/product_model.dart';
-import 'package:storeapp/data/repositories/product_repository.dart';
+import 'package:storeapp/data/repositories/products/product_repository.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final ProductRepository _repository;

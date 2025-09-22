@@ -1,5 +1,5 @@
-import '../../core/client.dart';
-import '../../core/utils/result.dart';
+import '../../../core/client.dart';
+import '../../../core/utils/result.dart';
 
 class ResetEmailRepository {
   final ApiClient _client;

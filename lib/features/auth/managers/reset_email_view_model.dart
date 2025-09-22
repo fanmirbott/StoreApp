@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import '../../../data/repositories/reset_email_repository.dart';
+import '../../../data/repositories/auth/reset_email_repository.dart';
 
 class ResetEmailViewModel extends ChangeNotifier {
   final ResetEmailRepository _repository;

@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/core/client.dart';
+import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
-import 'package:storeapp/data/repositories/product_repository.dart';
+import 'package:storeapp/data/repositories/products/product_repository.dart';
 import 'package:storeapp/features/home/managers/product_view_model.dart';
+import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
 import 'package:storeapp/features/home/widgets/home_page_appbar.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,16 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
 
-  final List<Map<String, dynamic>> bottomNavItems = [
-    {"icon": AppIcons.home, "page": HomePage()},
-    {"icon": AppIcons.search, "page": SearchPage()},
-    {"icon": AppIcons.heart, "page": FavoritesPage()},
-    {"icon": AppIcons.cart, "page": CartPage()},
-    {"icon": AppIcons.user, "page": ProfilePage()},
-  ];
-
+  bool isLike = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Expanded(
                 child: GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.only(right: 24, left: 24, bottom: 100),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 20,
@@ -51,73 +46,91 @@ class _HomePageState extends State<HomePage> {
                   itemCount: vm.products.length,
                   itemBuilder: (BuildContext context, index) {
                     final product = vm.products[index];
-                    return Column(
-                      children: [
-                        Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
-                                product.image,
-                                height: 174.h,
-                                width: 161.w,
-                                fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: (){
+                        context.push(Routes.productDetailPage);
+                      },
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.network(
+                                  product.image,
+                                  height: 174.h,
+                                  width: 161.w,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              top: 12,
-                              right: 12,
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isLike = !isLike;
-                                  });
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    color: AppColors.white,
-                                  ),
-                                  alignment: Alignment.center,
-                                  width: 34.w,
-                                  height: 34.h,
-                                  child: SvgPicture.asset(
-                                    isLike
-                                        ? AppIcons.heartFilled
-                                        : AppIcons.like,
+                              Positioned(
+                                top: 12,
+                                right: 12,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isLike = !isLike;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      color: AppColors.white,
+                                    ),
+                                    alignment: Alignment.center,
+                                    width: 34.w,
+                                    height: 34.h,
+                                    child: SvgPicture.asset(
+                                      isLike
+                                          ? AppIcons.heartFilled
+                                          : AppIcons.like,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.title,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "\$ ${product.price} ${product.discount}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.sp,
-                                    color: AppColors.primary500,
-                                  ),
+                            ],
+                          ),
+                          SizedBox(height: 8,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.title,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primary,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "\$${product.price}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp,
+                                      color: AppColors.primary500,
+                                    ),
+                                  ),
+                                  if (product.discount != 0)
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 4.w),
+                                      child: Text(
+                                        "-${product.discount}%",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12.sp,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -127,47 +140,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       extendBody: true,
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 86,
-        decoration: BoxDecoration(color: AppColors.white),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(bottomNavItems.length, (index) {
-            final item = bottomNavItems[index];
-            final isSelected = currentIndex == index;
-
-            return InkWell(
-              borderRadius: BorderRadius.circular(12.r),
-              onTap: () {
-                setState(() {
-                  currentIndex = index;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => item["page"]),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary100 : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: SvgPicture.asset(
-                  item["icon"],
-                  width: 24.w,
-                  height: 24.h,
-                  colorFilter: ColorFilter.mode(
-                    isSelected ? AppColors.primary : AppColors.primary500,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
+      bottomNavigationBar:BottomNavigationBarApp()
     );
   }
 }

@@ -1,5 +1,5 @@
-import '../../core/client.dart';
-import '../../core/utils/result.dart';
+import '../../../core/client.dart';
+import '../../../core/utils/result.dart';
 
 class VerifyResetCodeRepository {
   final ApiClient _client;

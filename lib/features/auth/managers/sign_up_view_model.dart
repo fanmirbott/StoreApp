@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/repositories/sign_up_repositories.dart';
+import '../../../data/repositories/auth/sign_up_repositories.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final SignUpRepositories _repository;

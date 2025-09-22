@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../data/repositories/verification_repository.dart';
+import '../../../data/repositories/auth/verification_repository.dart';
 
 class VerifyResetCodeViewModel extends ChangeNotifier {
   final VerifyResetCodeRepository _repository;

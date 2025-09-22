@@ -1,7 +1,7 @@
 
 
-import '../../core/client.dart';
-import '../../core/utils/result.dart';
+import '../../../core/client.dart';
+import '../../../core/utils/result.dart';
 
 class SignUpRepositories {
   final ApiClient _client;
