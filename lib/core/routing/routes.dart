@@ -12,4 +12,8 @@ class Routes {
   static const splash = '/splash';
   static const notificationPage = '/notificationPage';
   static const productDetailPage = '/productDetailPage';
+  static const searchPage = '/searchPage';
+  static const savedPage = '/savedPage';
+  static const cartPage = '/cartPage';
+  static const accountPage = '/accountPage';
 }

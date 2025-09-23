@@ -1,9 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/utils/status.dart';
-import '../../../data/repositories/notification_repository.dart';
+import '../../../../core/utils/status.dart';
+import '../../../../data/repositories/notification_repository.dart';
 import 'notification_state.dart';
 import 'package:flutter/material.dart';
-
 part 'notification_event.dart';
 
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
@@ -22,7 +21,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       Emitter<NotificationState> emit,
       ) async {
     emit(state.copyWith(status: Status.loading));
-    final result = await _notifRepo.getNotification(); // <-- to‘g‘risi shu
+    final result = await _notifRepo.getNotification();
     result.fold(
           (error) => emit(
         state.copyWith(status: Status.error, errorMessage: error.toString()),

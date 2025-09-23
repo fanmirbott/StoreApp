@@ -48,7 +48,8 @@ class _HomePageState extends State<HomePage> {
                     final product = vm.products[index];
                     return GestureDetector(
                       onTap: (){
-                        context.push(Routes.productDetailPage);
+                        context.push(Routes.productDetailPage,
+                        extra: product.id);
                       },
                       child: Column(
                         children: [

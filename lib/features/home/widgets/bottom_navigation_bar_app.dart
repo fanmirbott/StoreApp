@@ -1,81 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
-import '../../account/pages/account_page.dart';
-import '../../cart/pages/my_cart_page.dart';
-import '../../saved/pages/saved_items_page.dart';
-import '../../search/pages/search_page.dart';
-import '../pages/home_page.dart';
+import '../../../core/routing/routes.dart';
 
-class BottomNavigationBarApp extends StatefulWidget {
+class BottomNavigationBarApp extends StatelessWidget {
   const BottomNavigationBarApp({super.key});
 
   @override
-  State<BottomNavigationBarApp> createState() => _BottomNavigationBarAppState();
-}
-
-class _BottomNavigationBarAppState extends State<BottomNavigationBarApp> {
-  int currentIndex = 0;
-
-  final List<Map<String, dynamic>> bottomNavItems = [
-    {"icon": AppIcons.home, "page": HomePage()},
-    {"icon": AppIcons.search, "page": SearchPage()},
-    {"icon": AppIcons.heart, "page": SavedItemsPage()},
-    {"icon": AppIcons.cart, "page": MyCartPage()},
-    {"icon": AppIcons.user, "page": AccountPage()},
-  ];
-  List items = [
-    'Home',
-    'Search',
-    'Saved',
-    'Cart',
-    'Account'
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+
     return Container(
       width: double.infinity,
-      height: 86,
-      decoration: BoxDecoration(color: AppColors.white),
+      height: 86.h,
+      decoration: const BoxDecoration(color: AppColors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(bottomNavItems.length, (index) {
-          final item = bottomNavItems[index];
-          final isSelected = currentIndex == index;
-          return InkWell(
-            borderRadius: BorderRadius.circular(12.r),
-            onTap: () {
-              setState(() {
-                currentIndex = index;
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset(
-                    item["icon"],
-                    width: 24.w,
-                    height: 24.h,
-                    colorFilter: ColorFilter.mode(
-                      isSelected ? AppColors.primary : AppColors.primary500,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                  Text(items[index]),
-                  SizedBox(height: 10,)
-                ],
-              ),
+        children: [
+          _navItem(
+            context,
+            icon: AppIcons.home,
+            label: "Home",
+            route: Routes.homePage,
+            isSelected: location == Routes.homePage,
+          ),
+          _navItem(
+            context,
+            icon: AppIcons.search,
+            label: "Search",
+            route: Routes.searchPage,
+            isSelected: location == Routes.searchPage,
+          ),
+          _navItem(
+            context,
+            icon: AppIcons.heart,
+            label: "Saved",
+            route: Routes.savedPage,
+            isSelected: location == Routes.savedPage,
+          ),
+          _navItem(
+            context,
+            icon: AppIcons.cart,
+            label: "Cart",
+            route: Routes.cartPage,
+            isSelected: location == Routes.cartPage,
+          ),
+          _navItem(
+            context,
+            icon: AppIcons.user,
+            label: "Account",
+            route: Routes.accountPage,
+            isSelected: location == Routes.accountPage,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _navItem(
+      BuildContext context, {
+        required String icon,
+        required String label,
+        required String route,
+        required bool isSelected,
+      }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(12.r),
+      onTap: () {
+        context.go(route);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            icon,
+            width: 24.w,
+            height: 24.h,
+            colorFilter: ColorFilter.mode(
+              isSelected ? AppColors.primary : AppColors.primary500,
+              BlendMode.srcIn,
             ),
-          );
-        }),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: isSelected ? AppColors.primary : AppColors.primary500,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ],
       ),
     );
   }

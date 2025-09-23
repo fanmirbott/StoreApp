@@ -54,4 +54,5 @@ class AppIcons {
   static const String warningCircle = 'assets/icons/WarningCircle.svg';
   static const String web = 'assets/icons/web.svg';
   static const String whatsapp = 'assets/icons/whatsapp.svg';
+  static const String starRating = 'assets/icons/Rating.svg';
 }

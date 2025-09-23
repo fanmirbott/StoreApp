@@ -129,7 +129,6 @@ class _HomePageAppbarState extends State<HomePageAppbar> {
                       spacing: 8,
                       children: [
                         ...List.generate(vm.categories.length, (index) {
-                          // vm.categories.insert(-1, 'A;;');
                           return GestureDetector(
                             onTap: () {
                               activInd = index;

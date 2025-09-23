@@ -4,10 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/core/utils/status.dart';
-import 'package:storeapp/data/repositories/notification_repository.dart';
-import 'package:storeapp/features/home/managers/notification_bloc.dart';
-import 'package:storeapp/features/home/managers/notification_state.dart';
 import 'package:storeapp/data/models/notification_model.dart';
+import '../managers/notification/notification_bloc.dart';
+import '../managers/notification/notification_state.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});

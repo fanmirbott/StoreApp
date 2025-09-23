@@ -23,20 +23,39 @@ class ProductDetailModel {
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) {
     return ProductDetailModel(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      price: json['price'],
-      isLiked: json['isLiked'],
-      productImages: (json['productImages'] as List)
-          .map((e) => ProductImage.fromJson(e))
+      id: json['id'] as int,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      price: json['price'] as int,
+      isLiked: json['isLiked'] as bool,
+      productImages: (json['productImages'] as List<dynamic>)
+          .map((e) => ProductImage.fromJson(e as Map<String, dynamic>))
           .toList(),
-      productSizes: (json['productSizes'] as List)
-          .map((e) => ProductSize.fromJson(e))
+      productSizes: (json['productSizes'] as List<dynamic>)
+          .map((e) => ProductSize.fromJson(e as Map<String, dynamic>))
           .toList(),
       reviewsCount: json['reviewsCount'] as int,
       rating: (json['rating'] as num).toDouble(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'isLiked': isLiked,
+      'productImages': productImages.map((e) => e.toJson()).toList(),
+      'productSizes': productSizes.map((e) => e.toJson()).toList(),
+      'reviewsCount': reviewsCount,
+      'rating': rating,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'ProductDetailModel{id: $id, title: $title, description: $description, price: $price, isLiked: $isLiked, productImages: $productImages, productSizes: $productSizes, reviewsCount: $reviewsCount, rating: $rating}';
   }
 }
 
@@ -55,6 +74,18 @@ class ProductImage {
       image: json['image'] as String,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'image': image,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'ProductImage{id: $id, image: $image}';
+  }
 }
 
 class ProductSize {
@@ -68,8 +99,20 @@ class ProductSize {
 
   factory ProductSize.fromJson(Map<String, dynamic> json) {
     return ProductSize(
-      id: json['id'],
-      title: json['title'],
+      id: json['id'] as int,
+      title: json['title'] as String,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'ProductSize{id: $id, title: $title}';
   }
 }
