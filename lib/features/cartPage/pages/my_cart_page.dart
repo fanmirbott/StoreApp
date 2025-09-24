@@ -1,0 +1,178 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:storeapp/core/utils/colors.dart';
+import 'package:storeapp/core/utils/icons.dart';
+import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
+import 'package:storeapp/features/home/widgets/counter_row_vidget.dart';
+
+import '../../../core/utils/status.dart';
+import '../../home/managers/cart/cart_bloc.dart';
+import '../../home/managers/cart/cart_state.dart';
+
+class MyCartPage extends StatelessWidget {
+  const MyCartPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: SvgPicture.asset(AppIcons.backArrow),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'My Cart',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: SvgPicture.asset(AppIcons.bell),
+          ),
+        ],
+      ),
+      body: BlocBuilder<CartBloc, CartState>(
+        builder: (context, state) {
+          if (state.status == Status.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state.status == Status.error) {
+            return Center(
+              child: Text(state.errorMessage ?? "Xatolik yuz berdi"),
+            );
+          }
+
+          if (state.cart == null || state.cart!.items.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    AppIcons.cartDuotone,
+                    width: 64.w,
+                    height: 64.h,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    'Your Cart Is Empty!',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  SizedBox(height: 12.h),
+                  Text(
+                    'When you add products, they’ll',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primary500,
+                    ),
+                  ),
+                  Text(
+                    'appear here.',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primary500,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final cart = state.cart!;
+          return Padding(
+            padding: EdgeInsetsGeometry.only(right: 24, left: 24),
+            child: Column(
+              children: [
+                ...List.generate(state.cart!.items.length, (index) {
+                  return Container(
+                    padding: EdgeInsetsGeometry.symmetric(
+                      horizontal: 15,
+                      vertical: 14,
+                    ),
+                    width: 342.w,
+                    height: 107.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.primary200,
+                      ),
+                      borderRadius: BorderRadiusGeometry.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.network(
+                          cart.items[index].image,
+                          width: 83.w,
+                          height: 79.h,
+                          fit: BoxFit.cover,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              cart.items[index].title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            Text(
+                              "Size ${cart.items[index].size}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.sp,
+                                color: AppColors.primary500,
+                              ),
+                            ),
+                            Spacer(),
+                            Text(
+                              "\$ ${cart.items[index].price}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.sp,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(
+                              AppIcons.trash,
+                              width: 16.w,
+                              height: 16.h,
+                              fit: BoxFit.cover,
+                            ),
+                            Spacer(),
+                            CounterRow(),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: const BottomNavigationBarApp(),
+    );
+  }
+}

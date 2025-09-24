@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/features/home/managers/productDetail/product_detail_bloc.dart';
@@ -95,28 +97,33 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                             ),
                             SizedBox(height: 13.h),
-                            Row(
-                              children: [
-                                SvgPicture.asset(AppIcons.starRating),
-                                SizedBox(width: 2.w),
-                                Text(
-                                  "${product.rating.toStringAsFixed(1)}/5",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.primary,
+                            InkWell(
+                              onTap: (){
+                                context.push(Routes.reviewsPage);
+                              },
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.starRating),
+                                  SizedBox(width: 2.w),
+                                  Text(
+                                    "${product.rating.toStringAsFixed(1)}/5",
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primary,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 5.w),
-                                Text(
-                                  "(${product.reviewsCount} reviews)",
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.primary500,
+                                  SizedBox(width: 5.w),
+                                  Text(
+                                    "(${product.reviewsCount} reviews)",
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.primary500,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             SizedBox(height: 13.h),
                             Text(
@@ -129,7 +136,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 12.h),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

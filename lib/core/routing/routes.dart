@@ -16,4 +16,5 @@ class Routes {
   static const savedPage = '/savedPage';
   static const cartPage = '/cartPage';
   static const accountPage = '/accountPage';
+  static const reviewsPage = '/reviewsPage';
 }

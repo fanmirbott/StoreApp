@@ -10,15 +10,17 @@ import 'package:storeapp/features/auth/pages/login_page.dart';
 import 'package:storeapp/features/auth/pages/reset_password_page.dart';
 import 'package:storeapp/features/auth/pages/sign_up_page.dart';
 import 'package:storeapp/features/auth/pages/verification_page.dart';
-import 'package:storeapp/features/cart/pages/my_cart_page.dart';
 import 'package:storeapp/features/home/pages/home_page.dart';
 import 'package:storeapp/features/home/pages/notification_page.dart';
 import 'package:storeapp/features/home/pages/product_detail_page.dart';
+import 'package:storeapp/features/home/pages/reviews_page.dart';
 import 'package:storeapp/features/obBoarding/pages/onboarding_page.dart';
 import 'package:storeapp/features/obBoarding/pages/splash.dart';
 import 'package:storeapp/features/obBoarding/pages/splash_page.dart';
 import 'package:storeapp/features/saved/pages/saved_items_page.dart';
 import 'package:storeapp/features/search/pages/search_page.dart';
+
+import '../../features/cartPage/pages/my_cart_page.dart';
 
 final router = GoRouter(
   initialLocation: Routes.homePage,
@@ -97,6 +99,10 @@ final router = GoRouter(
     GoRoute(
       path: Routes.accountPage,
       builder: (context, state) => AccountPage(),
+    ),
+    GoRoute(
+      path: Routes.reviewsPage,
+      builder: (context, state) => ReviewsPage(),
     ),
   ],
 );

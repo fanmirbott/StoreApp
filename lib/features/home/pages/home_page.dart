@@ -13,6 +13,8 @@ import 'package:storeapp/features/home/managers/product_view_model.dart';
 import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
 import 'package:storeapp/features/home/widgets/home_page_appbar.dart';
 
+import '../managers/saved_view_model.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -67,26 +69,32 @@ class _HomePageState extends State<HomePage> {
                               Positioned(
                                 top: 12,
                                 right: 12,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isLike = !isLike;
-                                    });
+                                child: Consumer<SavedViewModel>(
+                                  builder: (context, savedVm, child) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if (product.isLiked) {
+                                          savedVm.unSaveProduct(product);
+                                        } else {
+                                          savedVm.saveProduct(product);
+                                        }
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8.r),
+                                          color: AppColors.white,
+                                        ),
+                                        alignment: Alignment.center,
+                                        width: 34.w,
+                                        height: 34.h,
+                                        child: SvgPicture.asset(
+                                          product.isLiked
+                                              ? AppIcons.heartFilled
+                                              : AppIcons.like,
+                                        ),
+                                      ),
+                                    );
                                   },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      color: AppColors.white,
-                                    ),
-                                    alignment: Alignment.center,
-                                    width: 34.w,
-                                    height: 34.h,
-                                    child: SvgPicture.asset(
-                                      isLike
-                                          ? AppIcons.heartFilled
-                                          : AppIcons.like,
-                                    ),
-                                  ),
                                 ),
                               ),
                             ],

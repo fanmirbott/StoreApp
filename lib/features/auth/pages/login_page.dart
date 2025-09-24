@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storeapp/core/client.dart';
-import 'package:storeapp/data/repositories/login_repository.dart';
+import 'package:storeapp/data/repositories/auth/login_repository.dart';
 import 'package:storeapp/features/auth/managers/login_view_model.dart';
 import 'package:storeapp/features/auth/widgets/auth_button_otp_send.dart';
 import 'package:storeapp/features/auth/widgets/text_field_and_text.dart';

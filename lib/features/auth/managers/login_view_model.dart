@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../data/repositories/login_repository.dart';
+import '../../../data/repositories/auth/login_repository.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final LoginRepository _repository;

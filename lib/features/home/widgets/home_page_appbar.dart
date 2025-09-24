@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/routing/routes.dart';
-import 'package:storeapp/data/repositories/categories_repository.dart';
+import 'package:storeapp/data/repositories/products/categories_repository.dart';
 import 'package:storeapp/features/home/managers/categories_view_model.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';

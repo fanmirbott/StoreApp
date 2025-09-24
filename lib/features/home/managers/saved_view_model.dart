@@ -11,7 +11,6 @@ class SavedViewModel extends ChangeNotifier {
   bool isLoading = false;
   String? errorMessage;
 
-  // 🔹 Save qilish
   Future<void> saveProduct(ProductModel product) async {
     isLoading = true;
     errorMessage = null;
@@ -32,7 +31,6 @@ class SavedViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // 🔹 Unsave qilish
   Future<void> unSaveProduct(ProductModel product) async {
     isLoading = true;
     errorMessage = null;

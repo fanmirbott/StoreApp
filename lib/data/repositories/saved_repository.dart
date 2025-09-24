@@ -5,7 +5,6 @@ class SavedRepository {
   final ApiClient client;
   SavedRepository({required this.client});
 
-  // 🔹 Save qilish (like)
   Future<Either<Exception, void>> saveProduct(int productId) async {
     try {
       await client.post("/auth/save/$productId");
@@ -15,7 +14,6 @@ class SavedRepository {
     }
   }
 
-  // 🔹 Unsave qilish (unlike)
   Future<Either<Exception, void>> unSaveProduct(int productId) async {
     try {
       await client.post("/auth/unsave/$productId");
