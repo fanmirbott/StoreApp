@@ -153,11 +153,15 @@ class MyCartPage extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            SvgPicture.asset(
-                              AppIcons.trash,
-                              width: 16.w,
-                              height: 16.h,
-                              fit: BoxFit.cover,
+                            InkWell(
+                              onTap: (){
+                              },
+                              child: SvgPicture.asset(
+                                AppIcons.trash,
+                                width: 16.w,
+                                height: 16.h,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             Spacer(),
                             CounterRow(),
