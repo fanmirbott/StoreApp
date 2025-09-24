@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:storeapp/core/routing/router.dart';
 import 'package:storeapp/data/repositories/notification_repository.dart';
 import 'package:storeapp/data/repositories/products/product_detail_repository.dart';
+import 'package:storeapp/data/repositories/saved_repository.dart';
 
 import 'core/client.dart';
 
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => ProductDetailRepository(client: context.read()),
+        ),
+        RepositoryProvider(
+          create: (context) => SavedRepository(client: context.read()),
         ),
       ],
       child: ScreenUtilInit(

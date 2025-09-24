@@ -69,7 +69,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       right: 24.w,
                       left: 24.w,
                       top: 15.h,
-                      bottom: 100.h,
+                      bottom: 120.h,
                     ),
                     child: Column(
                       children: [
@@ -100,7 +100,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 SvgPicture.asset(AppIcons.starRating),
                                 SizedBox(width: 2.w),
                                 Text(
-                                  "${product.rating}/5",
+                                  "${product.rating.toStringAsFixed(1)}/5",
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     fontWeight: FontWeight.w500,

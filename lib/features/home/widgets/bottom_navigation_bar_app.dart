@@ -71,7 +71,7 @@ class BottomNavigationBarApp extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(12.r),
       onTap: () {
-        context.go(route);
+        context.push(route);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

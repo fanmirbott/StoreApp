@@ -26,65 +26,80 @@ class SearchPage extends StatelessWidget {
           IconButton(onPressed: () {}, icon: SvgPicture.asset(AppIcons.bell)),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.only(right: 24, left: 24),
-        child: Column(
-          children: [
-            Row(
-              spacing: 14,
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    suffixIcon: InkWell(
-                      borderRadius: BorderRadius.circular(40.r),
-                      onTap: () {},
-                      child: SvgPicture.asset(
-                        AppIcons.mic,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(right: 24, left: 24),
+          child: Column(
+            children: [
+              Row(
+                spacing: 14,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      suffixIcon: InkWell(
+                        borderRadius: BorderRadius.circular(40.r),
+                        onTap: () {},
+                        child: SvgPicture.asset(
+                          AppIcons.mic,
+                          width: 24.w,
+                          height: 24.h,
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                      prefixIcon: SvgPicture.asset(
+                        AppIcons.search,
                         width: 24.w,
                         height: 24.h,
                         fit: BoxFit.scaleDown,
                       ),
-                    ),
-                    prefixIcon: SvgPicture.asset(
-                      AppIcons.search,
-                      width: 24.w,
-                      height: 24.h,
-                      fit: BoxFit.scaleDown,
-                    ),
-                    hintStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: AppColors.primary200,
-                    ),
-                    hintText: 'Search for clothes...',
-                    constraints: BoxConstraints(
-                      maxHeight: 52.h,
-                      maxWidth: 341.w,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide: BorderSide(
-                        color: AppColors.primary100,
-                        width: 0.1,
+                      hintStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        color: AppColors.primary200,
+                      ),
+                      hintText: 'Search for clothes...',
+                      constraints: BoxConstraints(
+                        maxHeight: 52.h,
+                        maxWidth: 341.w,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                        borderSide: BorderSide(
+                          color: AppColors.primary100,
+                          width: 0.1,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Recent Searches',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20.sp,
-                    color: AppColors.primary,
+                ],
+              ),
+              SizedBox(height: 16.h,),
+              Row(
+                children: [
+                  Text(
+                    'Recent Searches',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20.sp,
+                      color: AppColors.primary,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                  Spacer(),
+                  TextButton(
+                    onPressed: (){},
+                    child: Text(
+                      'Clear all',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15.sp,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBarApp(),

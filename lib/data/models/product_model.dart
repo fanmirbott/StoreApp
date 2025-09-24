@@ -4,7 +4,7 @@ class ProductModel {
   final String image;
   final String title;
   final int price;
-  final bool isLiked;
+  bool isLiked;
   final int discount;
 
   ProductModel({
@@ -24,8 +24,8 @@ class ProductModel {
       image: json['image'],
       title: json['title'],
       price: json['price'],
-      isLiked: json['isLiked'],
-      discount: json['discount'],
+      isLiked: json['isLiked'] ?? false,
+      discount: json['discount'] ?? 0,
     );
   }
 }

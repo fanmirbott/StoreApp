@@ -13,6 +13,7 @@ class ProductViewModel extends ChangeNotifier {
   String? errorMessage;
 
   Future<void> getProducts() async {
+    // start
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -20,16 +21,19 @@ class ProductViewModel extends ChangeNotifier {
     final result = await _repository.getProducts();
 
     result.fold(
+      // 👇 LEFT: xato holati
           (error) {
         products = [];
         errorMessage = error.toString();
+        isLoading = false;
+        notifyListeners();
       },
+      // 👇 RIGHT: muvaffaqiyatli holat
           (data) {
         products = data;
+        isLoading = false;
+        notifyListeners();
       },
     );
-
-    isLoading = false;
-    notifyListeners();
   }
 }
