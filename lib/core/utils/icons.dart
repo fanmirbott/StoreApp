@@ -53,6 +53,7 @@ class AppIcons {
   static const String userDuotone = 'assets/icons/user-duotone.svg';
   static const String walletDuotone = 'assets/icons/wallet-duotone.svg';
   static const String warningCircle = 'assets/icons/WarningCircle.svg';
+  static const String warning = 'assets/icons/Warning.svg';
   static const String web = 'assets/icons/web.svg';
   static const String whatsapp = 'assets/icons/whatsapp.svg';
   static const String starRating = 'assets/icons/Rating.svg';

@@ -22,7 +22,7 @@ void main() async {
   final token = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.requestPermission();
   print('telefon token🛑: ${token}');
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => NotificationRepository(client: context.read()),
         ),
+
         RepositoryProvider(
           create: (context) => ProductDetailRepository(client: context.read()),
         ),
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
             ),
           ],
           child: ScreenUtilInit(
-            designSize: const Size(390, 844),
+            designSize: Size(390, 844),
             child: MaterialApp.router(
               debugShowCheckedModeBanner: false,
               routerConfig: router,

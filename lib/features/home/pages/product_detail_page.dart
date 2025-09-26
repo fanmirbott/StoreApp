@@ -98,7 +98,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ),
                             SizedBox(height: 13.h),
                             InkWell(
-                              onTap: (){
+                              onTap: () {
                                 context.push(Routes.reviewsPage);
                               },
                               child: Row(
@@ -221,27 +221,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                         ],
                       ),
-                      Container(
-                        width: 240.w,
-                        height: 54.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: AppColors.primary,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(AppIcons.bag),
-                            SizedBox(width: 10.w),
-                            Text(
-                              'Add to Cart',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.white,
+                      GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                          width: 240.w,
+                          height: 54.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.r),
+                            color: AppColors.primary,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(AppIcons.bag),
+                              SizedBox(width: 10.w),
+                              Text(
+                                'Add to Cart',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.white,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

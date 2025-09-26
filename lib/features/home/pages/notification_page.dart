@@ -35,10 +35,15 @@ class NotificationPage extends StatelessWidget {
             switch (state.status) {
               case Status.loading:
                 return const Center(child: CircularProgressIndicator());
-
               case Status.error:
                 return Center(
                   child: Text(state.errorMessage ?? "Something went wrong"),
+                );
+              case(Status.values == null):
+                return Column(
+                  children: [
+
+                  ],
                 );
               case Status.success:
                 if (state.notifications.isEmpty) {

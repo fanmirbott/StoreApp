@@ -23,7 +23,7 @@ import 'package:storeapp/features/search/pages/search_page.dart';
 import '../../features/cartPage/pages/my_cart_page.dart';
 
 final router = GoRouter(
-  initialLocation: Routes.loginPage,
+  initialLocation: Routes.homePage,
   routes: [
     ShellRoute(
       builder: (context, state, child) => ChangeNotifierProvider(
