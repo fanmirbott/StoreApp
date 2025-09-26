@@ -14,8 +14,7 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-      NotificationBloc(notifRepo: context.read()),
+      create: (context) => NotificationBloc(notifRepo: context.read()),
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -47,13 +46,18 @@ class NotificationPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
-                        Icon(Icons.notifications_none,
-                            size: 64, color: Colors.grey),
+                        Icon(
+                          Icons.notifications_none,
+                          size: 64,
+                          color: Colors.grey,
+                        ),
                         SizedBox(height: 16),
                         Text(
                           "You haven’t gotten any notifications yet!",
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 8),
@@ -78,7 +82,9 @@ class NotificationPage extends StatelessWidget {
                       if (isSameDay(notif.date, now)) {
                         header = "Today";
                       } else if (isSameDay(
-                          notif.date, now.subtract(const Duration(days: 1)))) {
+                        notif.date,
+                        now.subtract(const Duration(days: 1)),
+                      )) {
                         header = "Yesterday";
                       } else {
                         header = DateFormat.yMMMMd().format(notif.date);
@@ -93,7 +99,9 @@ class NotificationPage extends StatelessWidget {
                             child: Text(
                               header,
                               style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ListTile(
@@ -102,7 +110,7 @@ class NotificationPage extends StatelessWidget {
                             width: 32,
                             height: 32,
                             placeholderBuilder: (context) =>
-                            const CircularProgressIndicator(strokeWidth: 2),
+                                const CircularProgressIndicator(strokeWidth: 2),
                           ),
                           title: Text(notif.title),
                           subtitle: Text(notif.content),
@@ -111,7 +119,6 @@ class NotificationPage extends StatelessWidget {
                             style: const TextStyle(color: Colors.grey),
                           ),
                         ),
-
                       ],
                     );
                   },

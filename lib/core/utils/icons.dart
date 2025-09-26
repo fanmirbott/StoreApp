@@ -1,5 +1,5 @@
 class AppIcons {
-  static const String address = 'assets/icons/address.svg';
+  static const String address = 'assets/icons/Address.svg';
   static const String arrowRight = 'assets/icons/arrow-right.svg';
   static const String backArrow = 'assets/icons/back_arrow.svg';
   static const String bag = 'assets/icons/Bag.svg';
@@ -11,19 +11,20 @@ class AppIcons {
   static const String cancel = 'assets/icons/cancel.svg';
   static const String cancelCircle = 'assets/icons/Cancel-circle.svg';
   static const String cartDuotone = 'assets/icons/Cart-duotone.svg';
+  static const String cardDuotone = 'assets/icons/Card-duotone.svg';
   static const String cart = 'assets/icons/Cart.svg';
   static const String cash = 'assets/icons/Cash.svg';
   static const String check = 'assets/icons/Check.svg';
   static const String chevron = 'assets/icons/Chevron.svg';
   static const String correct = 'assets/icons/correct.svg';
-  static const String details = 'assets/icons/details.svg';
+  static const String details = 'assets/icons/Details.svg';
   static const String discountDuotone = 'assets/icons/discount-duotone.svg';
   static const String edit = 'assets/icons/edit.svg';
   static const String eye = 'assets/icons/Eye.svg';
   static const String eyeOff = 'assets/icons/eye-off.svg';
   static const String facebook = 'assets/icons/Facebook.svg';
   static const String filter = 'assets/icons/Filter.svg';
-  static const String headphones = 'assets/icons/headphones.svg';
+  static const String headphones = 'assets/icons/Headphones.svg';
   static const String heart = 'assets/icons/Heart.svg';
   static const String heartFilled = 'assets/icons/Heart-filled.svg';
   static const String heartDuotone = 'assets/icons/heart-duotone.svg';
@@ -36,7 +37,7 @@ class AppIcons {
   static const String logosApplePay = 'assets/icons/logos-apple-pay.svg';
   static const String logosFacebook = 'assets/icons/logos_facebook.svg';
   static const String logosGoogleIcon = 'assets/icons/logos_google-icon.svg';
-  static const String logout = 'assets/icons/logout.svg';
+  static const String logout = 'assets/icons/Logout.svg';
   static const String mic = 'assets/icons/Mic.svg';
   static const String minus = 'assets/icons/Minus.svg';
   static const String phone = 'assets/icons/Phone.svg';

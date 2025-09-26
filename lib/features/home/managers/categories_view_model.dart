@@ -3,15 +3,14 @@ import 'package:storeapp/data/models/categories_model.dart';
 import 'package:storeapp/data/repositories/products/categories_repository.dart';
 
 class CategoriesViewModel extends ChangeNotifier {
-  final CategoryRepository _repository;
+  final ICategories _repository;
 
-  CategoriesViewModel({required CategoryRepository repository})
+  CategoriesViewModel({required ICategories repository})
       : _repository = repository;
 
   bool isLoading = false;
   List<CategoriesModel> categories = [];
   String? errorMessage;
-
   Future<void> getCategories() async {
     isLoading = true;
     errorMessage = null;
@@ -28,8 +27,11 @@ class CategoriesViewModel extends ChangeNotifier {
         categories = data;
       },
     );
-
     isLoading = false;
     notifyListeners();
+  }
+
+  void build(){
+    final categories = _repository.getCategories();
   }
 }
