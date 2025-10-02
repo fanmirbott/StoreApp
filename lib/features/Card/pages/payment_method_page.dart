@@ -4,10 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
-import 'package:storeapp/features/cartPage/widget/add_card_button.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 
 import '../../../core/utils/icons.dart';
+import '../widget/add_card_button.dart';
 
 class PaymentMethodPage extends StatefulWidget {
   const PaymentMethodPage({super.key});

@@ -4,11 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/features/auth/widgets/auth_button_otp_send.dart';
-import 'package:storeapp/features/auth/widgets/text_field_and_text.dart';
-import 'package:storeapp/features/cartPage/widget/text_field_add_card.dart';
-import 'package:storeapp/features/cartPage/widget/text_field_card_data.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 
+import '../widget/text_field_add_card.dart';
+import '../widget/text_field_card_data.dart';
 import '../widget/text_field_cvc.dart';
 
 class NewCardPage extends StatefulWidget {

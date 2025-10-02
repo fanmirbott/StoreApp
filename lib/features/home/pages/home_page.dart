@@ -74,9 +74,9 @@ class _HomePageState extends State<HomePage> {
                                     return GestureDetector(
                                       onTap: () {
                                         if (product.isLiked) {
-                                          savedVm.unSaveProduct(product);
+                                          savedVm.unSaveProduct(product, context);
                                         } else {
-                                          savedVm.saveProduct(product);
+                                          savedVm.saveProduct(product, context);
                                         }
                                       },
                                       child: Container(

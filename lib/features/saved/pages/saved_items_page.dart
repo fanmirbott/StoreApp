@@ -3,16 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:storeapp/features/home/managers/savedProduct/saved_bloc.dart';
-import 'package:storeapp/features/home/managers/savedProduct/saved_state.dart';
-
 import '../../../core/routing/routes.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
 import '../../home/widgets/bottom_navigation_bar_app.dart';
-
-class SavedItemsPage extends StatelessWidget {
+import '../savedProduct/saved_bloc.dart';
+import '../savedProduct/saved_state.dart';
+class SavedItemsPage extends StatefulWidget {
   const SavedItemsPage({super.key});
+
+  @override
+  State<SavedItemsPage> createState() => _SavedItemsPageState();
+}
+
+class _SavedItemsPageState extends State<SavedItemsPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<SavedProductsBloc>().add(FetchSavedProducts());
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +89,7 @@ class SavedItemsPage extends StatelessWidget {
                                 right: 12,
                                 child: GestureDetector(
                                   onTap: () {
+
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(

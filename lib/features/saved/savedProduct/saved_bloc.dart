@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storeapp/core/utils/status.dart';
-import 'package:storeapp/features/home/managers/savedProduct/saved_state.dart';
+import 'package:storeapp/features/saved/savedProduct/saved_state.dart';
 import '../../../../data/repositories/products/product_repository.dart';
 part 'saved_event.dart';
 

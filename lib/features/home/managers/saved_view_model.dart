@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // <--- Provider import qilinishi kerak
 import 'package:storeapp/data/models/product_model.dart';
 import 'package:storeapp/data/repositories/saved_repository.dart';
-
+import 'package:storeapp/features/home/managers/product_view_model.dart';
 class SavedViewModel extends ChangeNotifier {
   final SavedRepository _repository;
 
@@ -11,7 +12,7 @@ class SavedViewModel extends ChangeNotifier {
   bool isLoading = false;
   String? errorMessage;
 
-  Future<void> saveProduct(ProductModel product) async {
+  Future<void> saveProduct(ProductModel product, BuildContext context) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -24,14 +25,16 @@ class SavedViewModel extends ChangeNotifier {
       },
           (_) {
         product.isLiked = true;
+
+        Provider.of<ProductViewModel>(context, listen: false)
+            .updateProductLikeStatus(product.id, true);
       },
     );
 
     isLoading = false;
     notifyListeners();
   }
-
-  Future<void> unSaveProduct(ProductModel product) async {
+  Future<void> unSaveProduct(ProductModel product, BuildContext context) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -44,6 +47,8 @@ class SavedViewModel extends ChangeNotifier {
       },
           (_) {
         product.isLiked = false;
+        Provider.of<ProductViewModel>(context, listen: false)
+            .updateProductLikeStatus(product.id, false);
       },
     );
 

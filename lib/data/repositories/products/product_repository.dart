@@ -27,6 +27,7 @@ class ProductRepository {
       },
     );
   }
+
   Future<Result<List<SavedProductModel>>> getSavedProducts() async {
     final result = await _client.get<List<dynamic>>(
       '/products/saved-products',
@@ -35,10 +36,14 @@ class ProductRepository {
     return result.fold(
           (error) => Result.error(error),
           (data) {
-        final products = data
-            .map((e) => SavedProductModel.fromJson(e as Map<String, dynamic>))
-            .toList();
-        return Result.ok(products);
+        try {
+          final products = data
+              .map((e) => SavedProductModel.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return Result.ok(products);
+        } catch (e) {
+          return Result.error(Exception("Saqlangan mahsulotlarni parse qilishda xato: $e"));
+        }
       },
     );
   }

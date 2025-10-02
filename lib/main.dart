@@ -12,10 +12,10 @@ import 'package:storeapp/data/repositories/products/product_detail_repository.da
 import 'package:storeapp/data/repositories/saved_repository.dart';
 import 'core/client.dart';
 import 'data/repositories/products/product_repository.dart';
-import 'features/cartPage/managers/cardCreate/card_create_bloc.dart';
+import 'features/Card/managers/cardCreate/card_create_bloc.dart';
 import 'features/home/managers/cart/cart_bloc.dart';
-import 'features/home/managers/savedProduct/saved_bloc.dart';
 import 'features/home/managers/saved_view_model.dart';
+import 'features/saved/savedProduct/saved_bloc.dart';
 import 'firebase_options.dart';
 
 void main() async {

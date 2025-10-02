@@ -12,8 +12,16 @@ class ProductViewModel extends ChangeNotifier {
   List<ProductModel> products = [];
   String? errorMessage;
 
+  void updateProductLikeStatus(int productId, bool isLiked) {
+    final index = products.indexWhere((p) => p.id == productId);
+
+    if (index != -1) {
+      products[index].isLiked = isLiked;
+      notifyListeners();
+    }
+  }
+
   Future<void> getProducts() async {
-    // start
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -21,14 +29,12 @@ class ProductViewModel extends ChangeNotifier {
     final result = await _repository.getProducts();
 
     result.fold(
-      // 👇 LEFT: xato holati
           (error) {
         products = [];
         errorMessage = error.toString();
         isLoading = false;
         notifyListeners();
       },
-      // 👇 RIGHT: muvaffaqiyatli holat
           (data) {
         products = data;
         isLoading = false;
