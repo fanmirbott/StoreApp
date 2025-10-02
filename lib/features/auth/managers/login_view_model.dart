@@ -28,7 +28,6 @@ class LoginViewModel extends ChangeNotifier {
       },
           (data) async {
         _token = data;
-        // Tokenni SharedPreferences-ga saqlaymiz
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("token", _token!);
       },

@@ -27,10 +27,10 @@ class AppIcons {
   static const String headphones = 'assets/icons/Headphones.svg';
   static const String heart = 'assets/icons/Heart.svg';
   static const String heartFilled = 'assets/icons/Heart-filled.svg';
-  static const String heartDuotone = 'assets/icons/heart-duotone.svg';
+  static const String heartDuotone = 'assets/icons/Heart-duotone.svg';
   static const String home = 'assets/icons/Home.svg';
   static const String image = 'assets/icons/image.svg';
-  static const String instagram = 'assets/icons/instagram (1).svg';
+  static const String instagram = 'assets/icons/Instagram.svg';
   static const String like = 'assets/icons/like.svg';
   static const String location = 'assets/icons/location.svg';
   static const String locationDuotone = 'assets/icons/location-duotone.svg';
@@ -54,7 +54,7 @@ class AppIcons {
   static const String walletDuotone = 'assets/icons/wallet-duotone.svg';
   static const String warningCircle = 'assets/icons/WarningCircle.svg';
   static const String warning = 'assets/icons/Warning.svg';
-  static const String web = 'assets/icons/web.svg';
-  static const String whatsapp = 'assets/icons/whatsapp.svg';
+  static const String web = 'assets/icons/Web.svg';
+  static const String whatsapp = 'assets/icons/Whatsapp.svg';
   static const String starRating = 'assets/icons/Rating.svg';
 }

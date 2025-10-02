@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/core/routing/router.dart';
+import 'package:storeapp/data/repositories/card/card_create_repository.dart';
 import 'package:storeapp/data/repositories/notification_repository.dart';
 import 'package:storeapp/data/repositories/products/cart_repository.dart';
 import 'package:storeapp/data/repositories/products/product_detail_repository.dart';
 import 'package:storeapp/data/repositories/saved_repository.dart';
 import 'core/client.dart';
 import 'data/repositories/products/product_repository.dart';
+import 'features/cartPage/managers/cardCreate/card_create_bloc.dart';
 import 'features/home/managers/cart/cart_bloc.dart';
 import 'features/home/managers/savedProduct/saved_bloc.dart';
 import 'features/home/managers/saved_view_model.dart';
@@ -22,7 +24,7 @@ void main() async {
   final token = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.requestPermission();
   print('telefon token🛑: ${token}');
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -36,7 +38,6 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => NotificationRepository(client: context.read()),
         ),
-
         RepositoryProvider(
           create: (context) => ProductDetailRepository(client: context.read()),
         ),
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => ProductRepository(client: context.read()),
+        ),
+        RepositoryProvider(
+          create: (context) => CardCreateRepository(client: context.read()),
         ),
       ],
       child: MultiBlocProvider(
@@ -61,6 +65,11 @@ class MyApp extends StatelessWidget {
             create: (context) => SavedProductsBloc(
               savedRepo: context.read<ProductRepository>(),
             )..add(FetchSavedProducts()),
+          ),
+          BlocProvider(
+            create: (context) => CardCreateBloc(
+              repository: context.read<CardCreateRepository>(),
+            ),
           ),
         ],
         child: MultiProvider(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/routing/routes.dart';
+import '../../../core/utils/icons.dart';
 import '../widgets/auth_button_otp_send.dart';
 import '../widgets/text_field_and_text.dart';
 
@@ -25,8 +27,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Colors.black),
-        backgroundColor: Colors.white,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: SvgPicture.asset(AppIcons.backArrow),
+        ),        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Padding(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
@@ -94,83 +96,214 @@ class MyCartPage extends StatelessWidget {
 
           final cart = state.cart!;
           return Padding(
-            padding: EdgeInsetsGeometry.only(right: 24, left: 24),
+            padding: EdgeInsetsGeometry.only(right: 24, left: 24, bottom: 20, top: 10),
             child: Column(
               children: [
-                ...List.generate(state.cart!.items.length, (index) {
-                  return Container(
-                    padding: EdgeInsetsGeometry.symmetric(
-                      horizontal: 15,
-                      vertical: 14,
-                    ),
-                    width: 342.w,
-                    height: 107.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.primary200,
+                SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    spacing: 14,
+                    children: [
+                      ...List.generate(
+                        state.cart!.items.length,
+                            (index) {
+                          return Container(
+                            padding: EdgeInsetsGeometry.symmetric(
+                              horizontal: 15,
+                              vertical: 14,
+                            ),
+                            width: 342.w,
+                            height: 107.h,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primary200,
+                              ),
+                              borderRadius: BorderRadiusGeometry.circular(10.r),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.network(
+                                  cart.items[index].image,
+                                  width: 83.w,
+                                  height: 79.h,
+                                  fit: BoxFit.cover,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      cart.items[index].title,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14.sp,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Size ${cart.items[index].size}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12.sp,
+                                        color: AppColors.primary500,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Text(
+                                      "\$ ${cart.items[index].price}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14.sp,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Spacer(),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {},
+                                      child: SvgPicture.asset(
+                                        AppIcons.trash,
+                                        width: 16.w,
+                                        height: 16.h,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    CounterRow(),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      borderRadius: BorderRadiusGeometry.circular(10.r),
-                    ),
-                    child: Row(
+                    ],
+                  ),
+                ),
+                Spacer(),
+                Column(
+                  spacing: 16,
+                  children: [
+                    Row(
                       children: [
-                        Image.network(
-                          cart.items[index].image,
-                          width: 83.w,
-                          height: 79.h,
-                          fit: BoxFit.cover,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cart.items[index].title,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            Text(
-                              "Size ${cart.items[index].size}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12.sp,
-                                color: AppColors.primary500,
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              "\$ ${cart.items[index].price}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'Sub-total',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.sp,
+                            color: AppColors.primary500,
+                          ),
                         ),
                         Spacer(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: (){
-                              },
-                              child: SvgPicture.asset(
-                                AppIcons.trash,
-                                width: 16.w,
-                                height: 16.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Spacer(),
-                            CounterRow(),
-                          ],
+                        Text(
+                          "\$ ${cart.subTotal}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: AppColors.primary,
+                          ),
                         ),
                       ],
                     ),
-                  );
-                }),
+                    Row(
+                      children: [
+                        Text(
+                          'VAT (%)',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.sp,
+                            color: AppColors.primary500,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "\$ ${cart.vat}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Shipping fee',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.sp,
+                            color: AppColors.primary500,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "\$ ${cart.shippingFee}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        Spacer(),
+                        Text(
+                          "\$ ${cart.total}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 35,),
+                    GestureDetector(
+                      onTap: (){
+                        context.push(Routes.paymentMethodPage);
+                      },
+                      child: Container(
+                        width: 341.w,
+                        height: 54.h,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Row(
+                          spacing: 5,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Go To Checkout',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            SvgPicture.asset(AppIcons.arrowRight),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           );

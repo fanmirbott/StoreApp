@@ -4,12 +4,15 @@ import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/data/repositories/auth/reset_email_repository.dart';
 import 'package:storeapp/features/account/pages/account_page.dart';
+import 'package:storeapp/features/account/pages/help_center_page.dart';
 import 'package:storeapp/features/auth/managers/reset_email_view_model.dart';
 import 'package:storeapp/features/auth/pages/forgot_password_page.dart';
 import 'package:storeapp/features/auth/pages/login_page.dart';
 import 'package:storeapp/features/auth/pages/reset_password_page.dart';
 import 'package:storeapp/features/auth/pages/sign_up_page.dart';
 import 'package:storeapp/features/auth/pages/verification_page.dart';
+import 'package:storeapp/features/cartPage/pages/new_card_page.dart';
+import 'package:storeapp/features/cartPage/pages/payment_method_page.dart';
 import 'package:storeapp/features/home/pages/home_page.dart';
 import 'package:storeapp/features/home/pages/notification_page.dart';
 import 'package:storeapp/features/home/pages/product_detail_page.dart';
@@ -103,6 +106,18 @@ final router = GoRouter(
     GoRoute(
       path: Routes.reviewsPage,
       builder: (context, state) => ReviewsPage(),
+    ),
+    GoRoute(
+      path: Routes.helpCenterPage,
+      builder: (context, state) => HelpCenterPage(),
+    ),
+    GoRoute(
+      path: Routes.paymentMethodPage,
+      builder: (context, state) => PaymentMethodPage(),
+    ),
+    GoRoute(
+      path: Routes.newCardPage,
+      builder: (context, state) => NewCardPage(),
     ),
   ],
 );

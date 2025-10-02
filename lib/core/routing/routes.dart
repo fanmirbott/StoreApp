@@ -1,5 +1,4 @@
 
-
 class Routes {
   static const onBoarding = '/onBoarding';
   static const splashPage = '/splash';
@@ -17,4 +16,7 @@ class Routes {
   static const cartPage = '/cartPage';
   static const accountPage = '/accountPage';
   static const reviewsPage = '/reviewsPage';
+  static const helpCenterPage = '/helpCenterPage';
+  static const paymentMethodPage = '/paymentMethodPage';
+  static const newCardPage = '/newCardPage';
 }

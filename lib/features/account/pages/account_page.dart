@@ -270,7 +270,9 @@ class AccountPage extends StatelessWidget {
             ),
             Divider(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.helpCenterPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(
