@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:storeapp/core/utils/icons.dart';
 
 class TextFieldAndText extends StatelessWidget {
   final TextEditingController controller;
@@ -11,6 +10,7 @@ class TextFieldAndText extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final Function(String)? onChanged;
+  final Widget? prefixWidget;
 
   const TextFieldAndText({
     super.key,
@@ -21,11 +21,17 @@ class TextFieldAndText extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.onChanged,
+    this.prefixWidget,
   });
 
   @override
   Widget build(BuildContext context) {
     bool isValid = errorText == null && controller.text.isNotEmpty;
+
+    const Color primary200 = Colors.grey;
+    const String correctIcon = 'assets/icons/correct.svg';
+    const String warningCircleIcon = 'assets/icons/warning_circle.svg';
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,27 +44,33 @@ class TextFieldAndText extends StatelessWidget {
         TextField(
           controller: controller,
           obscureText: obscureText,
+          keyboardType:
+          prefixWidget != null ? TextInputType.phone : TextInputType.text,
+
           onChanged: onChanged,
           decoration: InputDecoration(
+            prefix: prefixWidget,
+
             hintText: hintText,
+            hintStyle: const TextStyle(color: primary200),
             errorText: errorText,
             suffixIcon:
-                suffixIcon ??
+            suffixIcon ??
                 (isValid
                     ? SvgPicture.asset(
-                        AppIcons.correct,
-                        width: 24.w,
-                        height: 24.h,
-                        fit: BoxFit.scaleDown,
-                      )
+                  correctIcon,
+                  width: 24.w,
+                  height: 24.h,
+                  fit: BoxFit.scaleDown,
+                )
                     : (errorText != null
-                          ? SvgPicture.asset(
-                              AppIcons.warningCircle,
-                              width: 24.w,
-                              height: 24.h,
-                              fit: BoxFit.scaleDown,
-                            )
-                          : null)),
+                    ? SvgPicture.asset(
+                  warningCircleIcon,
+                  width: 24.w,
+                  height: 24.h,
+                  fit: BoxFit.scaleDown,
+                )
+                    : null)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
               borderSide: BorderSide(

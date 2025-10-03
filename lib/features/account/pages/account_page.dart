@@ -81,7 +81,9 @@ class AccountPage extends StatelessWidget {
               color: AppColors.primary100,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.myDetailsPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(
@@ -155,7 +157,9 @@ class AccountPage extends StatelessWidget {
             ),
             Divider(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.paymentMethodPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(
@@ -192,7 +196,9 @@ class AccountPage extends StatelessWidget {
             ),
             Divider(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.notificationsSettingsPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(
@@ -233,7 +239,9 @@ class AccountPage extends StatelessWidget {
               color: AppColors.primary100,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.faqsPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(
@@ -361,7 +369,9 @@ class AccountPage extends StatelessWidget {
                               letterSpacing: -0.9,
                             ),
                           ),
-                          SizedBox(height: 24.h,),
+                          SizedBox(
+                            height: 24.h,
+                          ),
                           ButtonWidget(
                             onTap: () {
                               context.push(Routes.loginPage);
@@ -371,7 +381,9 @@ class AccountPage extends StatelessWidget {
                             border: Border.all(color: AppColors.red),
                             textColor: AppColors.white,
                           ),
-                          SizedBox(height: 12.h,),
+                          SizedBox(
+                            height: 12.h,
+                          ),
                           ButtonWidget(
                             onTap: () {
                               context.pop(context);

@@ -13,11 +13,11 @@ class BottomNavigationBarApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
-
     return Container(
       width: double.infinity,
       height: 86.h,
-      decoration: const BoxDecoration(color: AppColors.white),
+      decoration:  BoxDecoration(color: AppColors.white,
+      border: Border(top: BorderSide(color: AppColors.primary100)) ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

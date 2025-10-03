@@ -4,7 +4,10 @@ import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/data/repositories/auth/reset_email_repository.dart';
 import 'package:storeapp/features/account/pages/account_page.dart';
+import 'package:storeapp/features/account/pages/faqs_page.dart';
 import 'package:storeapp/features/account/pages/help_center_page.dart';
+import 'package:storeapp/features/account/pages/my_details_page.dart';
+import 'package:storeapp/features/account/pages/notifications_settings_page.dart';
 import 'package:storeapp/features/auth/managers/reset_email_view_model.dart';
 import 'package:storeapp/features/auth/pages/forgot_password_page.dart';
 import 'package:storeapp/features/auth/pages/login_page.dart';
@@ -117,6 +120,18 @@ final router = GoRouter(
     GoRoute(
       path: Routes.newCardPage,
       builder: (context, state) => NewCardPage(),
+    ),
+    GoRoute(
+      path: Routes.notificationsSettingsPage,
+      builder: (context, state) => NotificationsSettingsPage(),
+    ),
+    GoRoute(
+      path: Routes.myDetailsPage,
+      builder: (context, state) => MyDetailsPage(),
+    ),
+    GoRoute(
+      path: Routes.faqsPage,
+      builder: (context, state) => FaqsPage(),
     ),
   ],
 );

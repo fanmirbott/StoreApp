@@ -57,4 +57,6 @@ class AppIcons {
   static const String web = 'assets/icons/Web.svg';
   static const String whatsapp = 'assets/icons/Whatsapp.svg';
   static const String starRating = 'assets/icons/Rating.svg';
+  static const String calendar = 'assets/icons/Calendar.svg';
+
 }

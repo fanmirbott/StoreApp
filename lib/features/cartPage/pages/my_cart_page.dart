@@ -8,10 +8,9 @@ import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
 import 'package:storeapp/features/home/widgets/counter_row_vidget.dart';
-
 import '../../../core/utils/status.dart';
-import '../../home/managers/cart/cart_bloc.dart';
-import '../../home/managers/cart/cart_state.dart';
+import '../managers/cart/cart_bloc.dart';
+import '../managers/cart/cart_state.dart';
 
 class MyCartPage extends StatelessWidget {
   const MyCartPage({super.key});

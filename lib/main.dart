@@ -11,9 +11,11 @@ import 'package:storeapp/data/repositories/products/cart_repository.dart';
 import 'package:storeapp/data/repositories/products/product_detail_repository.dart';
 import 'package:storeapp/data/repositories/saved_repository.dart';
 import 'core/client.dart';
+import 'data/repositories/auth/user_repository.dart';
 import 'data/repositories/products/product_repository.dart';
 import 'features/Card/managers/cardCreate/card_create_bloc.dart';
-import 'features/home/managers/cart/cart_bloc.dart';
+import 'features/account/managers/userBloc/user_bloc.dart';
+import 'features/cartPage/managers/cart/cart_bloc.dart';
 import 'features/home/managers/saved_view_model.dart';
 import 'features/saved/savedProduct/saved_bloc.dart';
 import 'firebase_options.dart';
@@ -53,6 +55,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => CardCreateRepository(client: context.read()),
         ),
+        RepositoryProvider(
+          create: (context) => UserRepository(client: context.read<ApiClient>()),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -71,6 +76,11 @@ class MyApp extends StatelessWidget {
               repository: context.read<CardCreateRepository>(),
             ),
           ),
+          BlocProvider(
+            create: (context) => UserBloc(
+              userRepository: context.read<UserRepository>(),
+            )..add(FetchUser()),
+          ),
         ],
         child: MultiProvider(
           providers: [
@@ -80,6 +90,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ],
+
           child: ScreenUtilInit(
             designSize: Size(390, 844),
             child: MaterialApp.router(

@@ -9,27 +9,31 @@ class ButtonWidget extends StatelessWidget {
     super.key,
     required this.text,
     required this.buttonColor,
-    required this.border,
+    this.border,
     required this.textColor,
+    this.width,
+    this.height,
   });
 
   final VoidCallback onTap;
   final String text;
   final Color buttonColor;
   final Color textColor;
-  final BoxBorder border;
+  final BoxBorder? border;
+  final double? width;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 293.w,
-        height: 54.h,
-        alignment: AlignmentGeometry.center,
+        width: width ?? 293.w,
+        height: height ?? 54.h,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: buttonColor,
-          borderRadius: BorderRadiusGeometry.circular(10.r),
+          borderRadius: BorderRadius.circular(10.r),
           border: border,
         ),
         child: Text(

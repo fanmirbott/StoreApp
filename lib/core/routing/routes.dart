@@ -1,4 +1,3 @@
-
 class Routes {
   static const onBoarding = '/onBoarding';
   static const splashPage = '/splash';
@@ -19,4 +18,7 @@ class Routes {
   static const helpCenterPage = '/helpCenterPage';
   static const paymentMethodPage = '/paymentMethodPage';
   static const newCardPage = '/newCardPage';
+  static const notificationsSettingsPage = '/notificationsSettingsPage';
+  static const myDetailsPage = '/myDetailsPage';
+  static const faqsPage = '/faqsPage';
 }

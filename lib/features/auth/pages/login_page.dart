@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:storeapp/core/client.dart';
 import 'package:storeapp/data/repositories/auth/login_repository.dart';
 import 'package:storeapp/features/auth/managers/login_view_model.dart';
@@ -14,7 +13,6 @@ import '../../../core/routing/routes.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
 
-// Bu LoginPage faqat Providerni rootda o'rnatadi
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -88,7 +86,6 @@ class _LoginPageContentState extends State<_LoginPageContent> {
     super.dispose();
   }
 
-  // Login tugmasi bosilganda ishlaydi
   void _onLogin() async {
     if (!isFormValid) return;
 
@@ -97,10 +94,8 @@ class _LoginPageContentState extends State<_LoginPageContent> {
     await loginViewModel.login(controllerEmail.text, controllerPassword.text);
 
     if (loginViewModel.token != null) {
-      // Token muvaffaqiyatli saqlangan, HomePage-ga o'tish
       context.go(Routes.homePage);
     } else {
-      // Xatolik bo'lsa SnackBar bilan ko'rsatish
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(loginViewModel.errorMessage ?? 'Login xato')),
       );

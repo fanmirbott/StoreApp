@@ -21,7 +21,7 @@ class ApiClient {
   ApiClient()
       : _dio = Dio(
     BaseOptions(
-      baseUrl: "http://192.168.9.126:8888/api/v1",
+      baseUrl: "http://192.168.1.71:8888/api/v1",
       validateStatus: (status) => true,
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 5),
@@ -60,4 +60,17 @@ class ApiClient {
       return Result.error(Exception(e.toString()));
     }
   }
+  Future<Result<T>> patch<T>(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final response = await _dio.patch(path, data: data);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        return Result.error(
+            Exception("Xatolik: ${response.statusCode} - ${response.data}"));
+      }
+      return Result.ok(response.data as T);
+    } catch (e) {
+      return Result.error(Exception(e.toString()));
+    }
+  }
+
 }

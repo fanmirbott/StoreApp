@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/features/account/widgets/help_center_button.dart';
+import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
 
 import '../../../core/utils/icons.dart';
 
@@ -65,6 +64,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBarApp(),
     );
   }
 }

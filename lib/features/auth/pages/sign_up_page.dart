@@ -51,7 +51,6 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  // 🔹 Validatsiya funksiyalari
   void validateFullName(String value) {
     setState(() {
       fullNameError =
@@ -94,12 +93,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(vm.successMessage ?? "✅ Success!")),
+          SnackBar(content: Text(vm.successMessage ?? "Success!")),
         );
         context.go(Routes.homePage);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(vm.errorMessage ?? "❌ Xatolik yuz berdi")),
+          SnackBar(content: Text(vm.errorMessage ?? "Xatolik yuz berdi")),
         );
       }
     }
@@ -129,7 +128,6 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// Title
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -152,8 +150,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
               SizedBox(height: 24.h),
-
-              /// TextFields
               Column(
                 spacing: 16,
                 children: [
