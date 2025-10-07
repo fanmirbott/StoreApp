@@ -15,6 +15,7 @@ class AppIcons {
   static const String cart = 'assets/icons/Cart.svg';
   static const String cash = 'assets/icons/Cash.svg';
   static const String check = 'assets/icons/Check.svg';
+  static const String checkDoutone = 'assets/icons/Check-duotone.svg';
   static const String chevron = 'assets/icons/Chevron.svg';
   static const String correct = 'assets/icons/correct.svg';
   static const String details = 'assets/icons/Details.svg';

@@ -1,8 +1,10 @@
 import '../../../core/client.dart';
 import '../../../core/utils/result.dart';
+import '../../../core/utils/secure_storege.dart';
 
 class LoginRepository {
   final ApiClient _client;
+
   LoginRepository({required ApiClient client}) : _client = client;
 
   Future<Result<String>> login(String login, String password) async {
@@ -13,14 +15,19 @@ class LoginRepository {
 
     return response.fold(
           (error) => Result.error(error),
-          (data) {
+          (data) async {
         final token = data['accessToken'] as String?;
         if (token != null && token.isNotEmpty) {
+          await AuthStorage.saveToken(token);
           return Result.ok(token);
         } else {
           return Result.error(Exception("Token topilmadi"));
         }
       },
     );
+  }
+
+  Future<void> logout() async {
+    await AuthStorage.deleteToken();
   }
 }

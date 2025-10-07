@@ -50,6 +50,9 @@ dependencies:
   firebase_messaging: ^16.0.2
   flutter_flag_selector: ^0.0.1
   intl_phone_field: ^3.2.0
+  geolocator: ^14.0.2
+  latlong2: ^0.9.1
+  flutter_map: ^8.2.2
 
 dev_dependencies:
   flutter_test:

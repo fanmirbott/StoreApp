@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
-import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
+import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
 
@@ -173,7 +173,6 @@ class _FaqsPageState extends State<FaqsPage> {
                     .toList(),
               ),
             ),
-
             SizedBox(height: 20.h),
             TextField(
               controller: _searchController,
@@ -200,12 +199,10 @@ class _FaqsPageState extends State<FaqsPage> {
                   color: AppColors.primary200,
                 ),
                 hintText: 'Search for questions...',
-
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 16.h,
                   horizontal: 16.w,
                 ),
-
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
                   borderSide: BorderSide(
@@ -252,7 +249,7 @@ class _FaqsPageState extends State<FaqsPage> {
                             offset: const Offset(0, 1),
                           ),
                         ],
-                        border: Border.all(color: Colors.grey.shade200),
+                        border: Border.all(color: AppColors.primary100),
                       ),
                       child: Theme(
                         data: Theme.of(
@@ -263,14 +260,14 @@ class _FaqsPageState extends State<FaqsPage> {
                             horizontal: 16.w,
                             vertical: 4.h,
                           ),
-                          collapsedIconColor: AppColors.primary500,
+                          collapsedIconColor: AppColors.primary,
                           iconColor: AppColors.primary,
                           title: Text(
                             faq.question,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.primary500,
+                              color: AppColors.primary,
                             ),
                           ),
                           trailing: Icon(Icons.keyboard_arrow_down, size: 28.w),
@@ -287,7 +284,7 @@ class _FaqsPageState extends State<FaqsPage> {
                                 faq.answer,
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: AppColors.primary200,
+                                  color: AppColors.primary500,
                                   height: 1.5,
                                 ),
                               ),

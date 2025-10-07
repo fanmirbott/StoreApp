@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/routing/routes.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
-import '../../home/widgets/bottom_navigation_bar_app.dart';
+import '../../common/widgets/bottom_navigation_bar_app.dart';
 import '../savedProduct/saved_bloc.dart';
 import '../savedProduct/saved_state.dart';
 class SavedItemsPage extends StatefulWidget {
@@ -29,10 +29,6 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: SvgPicture.asset(AppIcons.backArrow),
-        ),
         centerTitle: true,
         title: const Text(
           'Saved Items',

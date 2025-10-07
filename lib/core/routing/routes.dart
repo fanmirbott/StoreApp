@@ -21,4 +21,5 @@ class Routes {
   static const notificationsSettingsPage = '/notificationsSettingsPage';
   static const myDetailsPage = '/myDetailsPage';
   static const faqsPage = '/faqsPage';
+  static const myOrdersPage = '/myOrdersPage';
 }

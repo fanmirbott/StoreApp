@@ -1,8 +1,10 @@
-import '../../../../data/models/me_model.dart';
 
-abstract class UpdateUserEvent {}
+part of 'update_user_bloc.dart';
 
-class UpdateUserRequested extends UpdateUserEvent {
+sealed class UpdateUserEvent {}
+
+final class UpdateUserStarted extends UpdateUserEvent {
   final UserModel user;
-  UpdateUserRequested(this.user);
+
+  UpdateUserStarted({required this.user});
 }

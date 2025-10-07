@@ -6,7 +6,7 @@ import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/features/account/widgets/button_widget.dart';
 import '../../../core/utils/icons.dart';
-import '../../home/widgets/bottom_navigation_bar_app.dart';
+import '../../common/widgets/bottom_navigation_bar_app.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -15,10 +15,6 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: SvgPicture.asset(AppIcons.backArrow),
-        ),
         centerTitle: true,
         title: const Text(
           'Account',

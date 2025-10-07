@@ -1,19 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:storeapp/features/account/managers/updateUserBloc/update_user_event.dart';
-import 'package:storeapp/features/account/managers/updateUserBloc/update_user_state.dart';
-import '../../../../core/utils/status.dart';
+import 'package:storeapp/core/utils/status.dart';
+import '../../../../data/models/me_model.dart';
 import '../../../../data/repositories/auth/user_repository.dart';
+import 'update_user_state.dart';
+part 'update_user_event.dart';
 
 class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
   final UserRepository userRepository;
 
-  UpdateUserBloc(this.userRepository)
-      : super(UpdateUserState(status: Status.loading)) {
-    on<UpdateUserRequested>(_onUpdateUserRequested);
+  UpdateUserBloc({required this.userRepository})
+      : super(UpdateUserState.initial()) {
+    on<UpdateUserStarted>(_onUpdateUserStarted);
   }
 
-  Future<void> _onUpdateUserRequested(
-      UpdateUserRequested event, Emitter<UpdateUserState> emit) async {
+  Future<void> _onUpdateUserStarted(
+      UpdateUserStarted event,
+      Emitter<UpdateUserState> emit,
+      ) async {
     emit(state.copyWith(status: Status.loading));
 
     final result = await userRepository.updateUser(event.user);
@@ -28,7 +31,7 @@ class UpdateUserBloc extends Bloc<UpdateUserEvent, UpdateUserState> {
           (updatedUser) {
         emit(state.copyWith(
           status: Status.success,
-          user: updatedUser,
+          updatedUser: updatedUser,
         ));
       },
     );

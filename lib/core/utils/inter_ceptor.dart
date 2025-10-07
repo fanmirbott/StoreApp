@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:storeapp/core/utils/secure_storege.dart';
 
 class AuthInterceptor extends Interceptor {
   @override
@@ -7,8 +7,7 @@ class AuthInterceptor extends Interceptor {
     final noAuthPaths = ["/auth/register", "/auth/login"];
 
     if (!noAuthPaths.any((path) => options.path.contains(path))) {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString("token");
+      final token = await AuthStorage.getToken();
 
       if (token != null && token.isNotEmpty) {
         options.headers["Authorization"] = "Bearer $token";

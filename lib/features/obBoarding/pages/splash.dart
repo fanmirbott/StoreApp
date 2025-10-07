@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:storeapp/core/client.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:storeapp/core/routing/routes.dart';
-import 'package:storeapp/core/utils/secure_storege.dart';
+import 'package:go_router/go_router.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -12,50 +11,32 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  final _storage = AuthStorage();
-  final _client = ApiClient();
+  final _storage = const FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
-    _checkLogin();
+    _checkAuth();
   }
 
-  Future<void> _checkLogin() async {
-    final token = await AuthStorage.getToken();
+  Future<void> _checkAuth() async {
+    await Future.delayed(const Duration(seconds: 2));
 
-    if (token == null || token.isEmpty) {
-      _goToLogin();
-      return;
+    final token = await _storage.read(key: "token");
+
+    if (token != null && token.isNotEmpty) {
+      context.go(Routes.homePage);
+    } else {
+      context.go(Routes.loginPage);
     }
-
-    final result = await _client.get<Map<String, dynamic>>("/auth/me");
-
-    result.fold(
-          (error) async {
-        await AuthStorage.deleteToken();
-        _goToLogin();
-      },
-          (data) {
-        _goToHome();
-      },
-    );
-  }
-
-  void _goToLogin() {
-    if (!mounted) return;
-    context.go(Routes.loginPage);
-  }
-
-  void _goToHome() {
-    if (!mounted) return;
-    context.go(Routes.homePage);
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

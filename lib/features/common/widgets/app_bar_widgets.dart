@@ -16,7 +16,7 @@ class AppBarWidgets extends StatelessWidget implements PreferredSizeWidget {
         icon: SvgPicture.asset(AppIcons.backArrow),
       ),
       centerTitle: true,
-      title:  Text(
+      title: Text(
         text,
         style: TextStyle(
           fontSize: 24,

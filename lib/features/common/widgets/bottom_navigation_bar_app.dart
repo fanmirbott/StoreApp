@@ -60,7 +60,6 @@ class BottomNavigationBarApp extends StatelessWidget {
       ),
     );
   }
-
   Widget _navItem(
       BuildContext context, {
         required String icon,
@@ -71,7 +70,7 @@ class BottomNavigationBarApp extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(12.r),
       onTap: () {
-        context.push(route);
+        context.go(route);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

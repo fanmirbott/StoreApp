@@ -1,26 +1,18 @@
-import '../../../../core/utils/status.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:storeapp/core/utils/status.dart';
 import '../../../../data/models/me_model.dart';
+part 'update_user_state.freezed.dart';
 
-class UpdateUserState {
-  final Status status;
-  final String? errorMessage;
-  final UserModel? user;
-
-  UpdateUserState({
-    required this.status,
-    this.errorMessage,
-    this.user,
-  });
-
-  UpdateUserState copyWith({
-    Status? status,
+@freezed
+abstract class UpdateUserState with _$UpdateUserState {
+  const factory UpdateUserState({
+    required Status status,
     String? errorMessage,
-    UserModel? user,
-  }) {
-    return UpdateUserState(
-      status: status ?? this.status,
-      errorMessage: errorMessage ?? this.errorMessage,
-      user: user ?? this.user,
-    );
-  }
+    UserModel? updatedUser,
+  }) = _UpdateUserState;
+  factory UpdateUserState.initial() => const UpdateUserState(
+    status: Status.success,
+    errorMessage: null,
+    updatedUser: null,
+  );
 }

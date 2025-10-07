@@ -20,13 +20,11 @@ class ProductViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  Future<void> getProducts() async {
+  Future<void> getProducts({int? categoryId, String? title}) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
-
-    final result = await _repository.getProducts();
+    final result = await _repository.getProducts(categoryId: categoryId, title: title);
 
     result.fold(
           (error) {

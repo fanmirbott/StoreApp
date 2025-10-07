@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
-import 'package:storeapp/features/home/widgets/bottom_navigation_bar_app.dart';
+import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
 import 'package:storeapp/features/home/widgets/counter_row_vidget.dart';
 import '../../../core/utils/status.dart';
 import '../managers/cart/cart_bloc.dart';

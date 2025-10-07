@@ -1,7 +1,6 @@
 import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/utils/result.dart';
 import 'package:storeapp/data/models/product_model.dart';
-
 import '../../models/saved_model.dart';
 
 class ProductRepository {
@@ -9,10 +8,22 @@ class ProductRepository {
 
   ProductRepository({required ApiClient client}) : _client = client;
 
-  Future<Result<List<ProductModel>>> getProducts() async {
+  Future<Result<List<ProductModel>>> getProducts({int? categoryId, String? title}) async {
+    final Map<String, dynamic> queryParams = {};
+
+    if (categoryId != null && categoryId != 0) {
+      queryParams['categoryId'] = categoryId.toString();
+    }
+
+    if (title != null && title.isNotEmpty) {
+      queryParams['title'] = title;
+    }
+
     final result = await _client.get<List<dynamic>>(
       '/products/list',
+      queryParams: queryParams.isNotEmpty ? queryParams : null,
     );
+
     return result.fold(
           (error) => Result.error(error),
           (data) {
@@ -22,7 +33,7 @@ class ProductRepository {
               .toList();
           return Result.ok(products);
         } catch (e) {
-          return Result.error(Exception("Kategoriya parse qilishda xato: $e"));
+          return Result.error(Exception("Mahsulotlarni parse qilishda xato: $e"));
         }
       },
     );
@@ -47,5 +58,4 @@ class ProductRepository {
       },
     );
   }
-
 }

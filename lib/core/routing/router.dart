@@ -7,6 +7,7 @@ import 'package:storeapp/features/account/pages/account_page.dart';
 import 'package:storeapp/features/account/pages/faqs_page.dart';
 import 'package:storeapp/features/account/pages/help_center_page.dart';
 import 'package:storeapp/features/account/pages/my_details_page.dart';
+import 'package:storeapp/features/account/pages/my_orders_page.dart';
 import 'package:storeapp/features/account/pages/notifications_settings_page.dart';
 import 'package:storeapp/features/auth/managers/reset_email_view_model.dart';
 import 'package:storeapp/features/auth/pages/forgot_password_page.dart';
@@ -28,7 +29,7 @@ import 'package:storeapp/features/search/pages/search_page.dart';
 import '../../features/Card/pages/payment_method_page.dart';
 
 final router = GoRouter(
-  initialLocation: Routes.homePage,
+  initialLocation: Routes.splash,
   routes: [
     ShellRoute(
       builder: (context, state, child) => ChangeNotifierProvider(
@@ -132,6 +133,10 @@ final router = GoRouter(
     GoRoute(
       path: Routes.faqsPage,
       builder: (context, state) => FaqsPage(),
+    ),
+    GoRoute(
+      path: Routes.myOrdersPage,
+      builder: (context, state) => MyOrdersPage(),
     ),
   ],
 );
