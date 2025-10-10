@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storeapp/features/home/managers/productDetail/product_detail_state.dart';
 
 import '../../../../core/utils/status.dart';
-import '../../../../data/repositories/products/product_detail_repository.dart';
+import '../../../../data/repositories/product_detail_repository.dart';
 
 part 'product_detail_event.dart';
 

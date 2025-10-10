@@ -4,14 +4,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
+import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/features/auth/widgets/auth_button_otp_send.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
-import '../managers/cardCreate/card_create_bloc.dart';
-import '../managers/cardCreate/card_create_event.dart';
-import '../managers/cardCreate/card_create_state.dart';
+import 'package:storeapp/features/Card/managers/cards/card_bloc.dart';
+import '../managers/cards/card_state.dart';
 import '../widget/text_field_add_card.dart';
 import '../widget/text_field_card_data.dart';
 import '../widget/text_field_cvc.dart';
+
+String normalizeExpiryDate(String date) {
+  if (date.length >= 7 && date.contains('-')) {
+    final parts = date.split('-');
+    if (parts.length == 3) {
+      final year = parts[0].substring(2);
+      final month = parts[1];
+      return '$month/$year';
+    }
+  }
+  return date;
+}
 
 class NewCardPage extends StatefulWidget {
   const NewCardPage({super.key});
@@ -35,32 +47,22 @@ class _NewCardPageState extends State<NewCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CardCreateBloc, CardCreateState>(
+    return BlocConsumer<CardBloc, CardState>(
       listener: (context, state) {
-        state.maybeWhen(
-          success: (data) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Card added successfully')),
-            );
-
-            final cardNumber = cardNumberController.text.trim();
-            final card =
-                "**** **** **** ${cardNumber.substring(cardNumber.length - 4)}";
-            Navigator.pop(context, card);
-          },
-          failure: (error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: $error')),
-            );
-          },
-          orElse: () {},
-        );
+        if (state.createStatus == Status.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Card added successfully')),
+          );
+          Navigator.pop(context);
+        }
+        if (state.createStatus == Status.error && state.errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${state.errorMessage}')),
+          );
+        }
       },
       builder: (context, state) {
-        final isLoading = state.maybeWhen(
-          loading: () => true,
-          orElse: () => false,
-        );
+        final isLoading = state.createStatus == Status.loading;
 
         return Scaffold(
           appBar: const AppBarWidgets(text: 'New Card'),
@@ -83,30 +85,35 @@ class _NewCardPageState extends State<NewCardPage> {
                   ),
                   SizedBox(height: 16.h),
                   Column(
-                    spacing: 16,
                     children: [
                       TextFieldAddCard(
                         controller: cardNumberController,
                         text: 'Card Number',
                         hintText: 'Enter your card number',
                       ),
+                      SizedBox(height: 16.h),
                       Row(
-                        spacing: 11,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          TextFieldCardData(
-                            controller: cardDateController,
-                            text: "Expiry Date",
-                            hintText: '2025-10-08',
+                          Expanded(
+                            child: TextFieldCardData(
+                              controller: cardDateController,
+                              text: "Expiry Date",
+                              hintText: '2025-10-08',
+                            ),
                           ),
-                          TextFieldCardCvc(
-                            controller: cardCvcController,
-                            text: "Security Code",
-                            hintText: 'CVC',
-                            suffixIcon: SvgPicture.asset(
-                              AppIcons.question,
-                              width: 24.w,
-                              height: 24.h,
-                              fit: BoxFit.scaleDown,
+                          SizedBox(width: 11.w),
+                          Expanded(
+                            child: TextFieldCardCvc(
+                              controller: cardCvcController,
+                              text: "Security Code",
+                              hintText: 'CVC',
+                              suffixIcon: SvgPicture.asset(
+                                AppIcons.question,
+                                width: 24.w,
+                                height: 24.h,
+                                fit: BoxFit.scaleDown,
+                              ),
                             ),
                           ),
                         ],
@@ -131,8 +138,8 @@ class _NewCardPageState extends State<NewCardPage> {
                         return;
                       }
 
-                      context.read<CardCreateBloc>().add(
-                        CardCreateEvent.create(
+                      context.read<CardBloc>().add(
+                        CardCreate(
                           cardNumber: cardNumber,
                           expiryDate: expiryDate,
                           securityCode: cvv,

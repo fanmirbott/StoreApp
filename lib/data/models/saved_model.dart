@@ -41,23 +41,4 @@ class SavedProductModel {
     };
   }
 
-  SavedProductModel copyWith({
-    int? id,
-    int? categoryId,
-    String? image,
-    String? title,
-    int? price,
-    bool? isLiked,
-    int? discount,
-  }) {
-    return SavedProductModel(
-      id: id ?? this.id,
-      categoryId: categoryId ?? this.categoryId,
-      image: image ?? this.image,
-      title: title ?? this.title,
-      price: price ?? this.price,
-      isLiked: isLiked ?? this.isLiked,
-      discount: discount ?? this.discount,
-    );
-  }
 }

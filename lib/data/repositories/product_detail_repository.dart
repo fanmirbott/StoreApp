@@ -8,18 +8,21 @@ class ProductDetailRepository {
   ProductDetailRepository({required ApiClient client}) : _client = client;
 
   Future<Result<ProductDetailModel>> getProductDetail(int id) async {
-    final result = await _client.get<Map<String, dynamic>>('/products/detail/$id');
+    final result = await _client.get<Map<String, dynamic>>(
+      '/products/detail/$id',
+    );
 
     return result.fold(
-          (error) => Result.error(error),
-          (data) {
+      (error) => Result.error(error),
+      (data) {
         try {
           return Result.ok(ProductDetailModel.fromJson(data));
         } catch (e, stackTrace) {
-          return Result.error(Exception("Product parse qilishda xato: $e\n$stackTrace"));
+          return Result.error(
+            Exception("Product parse qilishda xato: $e\n$stackTrace"),
+          );
         }
       },
     );
   }
-
 }

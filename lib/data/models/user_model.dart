@@ -37,8 +37,5 @@ class UserModel {
     };
   }
 
-  @override
-  String toString() {
-    return 'UserModel(id: $id, fullName: $fullName, email: $email, phoneNumber: $phoneNumber, gender: $gender, birthDate: $birthDate)';
-  }
+
 }

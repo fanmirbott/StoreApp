@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/data/models/cart_item_model.dart';
-import 'package:storeapp/data/repositories/products/cart_repository.dart';
+import 'package:storeapp/data/repositories/cart_repository.dart';
 
 part 'cart_event.dart';
 

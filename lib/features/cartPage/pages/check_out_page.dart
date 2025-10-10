@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/status.dart';
-import 'package:storeapp/features/Card/managers/cardsGet/card_bloc.dart';
-import 'package:storeapp/features/Card/managers/cardsGet/card_state.dart';
 import 'package:storeapp/features/account/managers/addressBloc/address_bloc.dart';
 import 'package:storeapp/features/account/managers/addressBloc/address_state.dart';
 import 'package:storeapp/features/account/widgets/button_widget.dart';
@@ -15,6 +13,8 @@ import 'package:storeapp/features/cartPage/managers/cart/cart_bloc.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 
 import '../../../core/utils/icons.dart';
+import '../../Card/managers/cards/card_bloc.dart';
+import '../../Card/managers/cards/card_state.dart';
 
 class CheckOutPage extends StatefulWidget {
   const CheckOutPage({super.key});

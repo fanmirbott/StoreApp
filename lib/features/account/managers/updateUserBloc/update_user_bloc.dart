@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:storeapp/core/utils/status.dart';
-import '../../../../data/models/me_model.dart';
+import '../../../../data/models/user_model.dart';
 import '../../../../data/repositories/auth/user_repository.dart';
 import 'update_user_state.dart';
 part 'update_user_event.dart';

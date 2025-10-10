@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:storeapp/core/utils/status.dart';
-import '../../../../data/models/me_model.dart';
+import '../../../../data/models/user_model.dart';
 part 'update_user_state.freezed.dart';
 
 @freezed

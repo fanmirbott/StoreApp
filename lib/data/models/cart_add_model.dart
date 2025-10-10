@@ -7,10 +7,4 @@ class CartAddModel {
     required this.sizeId,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'productId': productId,
-      'sizeId': sizeId,
-    };
-  }
 }

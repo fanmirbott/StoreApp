@@ -10,7 +10,7 @@ import 'package:storeapp/features/account/widgets/phone_input_field.dart';
 import 'package:storeapp/features/auth/widgets/text_field_and_text.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 import '../../../core/utils/status.dart';
-import '../../../data/models/me_model.dart';
+import '../../../data/models/user_model.dart';
 import '../managers/userBloc/user_bloc.dart';
 import '../managers/userBloc/user_state.dart';
 import '../managers/updateUserBloc/update_user_bloc.dart';

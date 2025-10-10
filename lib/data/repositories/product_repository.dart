@@ -1,14 +1,17 @@
 import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/utils/result.dart';
 import 'package:storeapp/data/models/product_model.dart';
-import '../../models/saved_model.dart';
+import '../models/saved_model.dart';
 
 class ProductRepository {
   final ApiClient _client;
 
   ProductRepository({required ApiClient client}) : _client = client;
 
-  Future<Result<List<ProductModel>>> getProducts({int? categoryId, String? title}) async {
+  Future<Result<List<ProductModel>>> getProducts({
+    int? categoryId,
+    String? title,
+  }) async {
     final Map<String, dynamic> queryParams = {};
 
     if (categoryId != null && categoryId != 0) {
@@ -25,15 +28,17 @@ class ProductRepository {
     );
 
     return result.fold(
-          (error) => Result.error(error),
-          (data) {
+      (error) => Result.error(error),
+      (data) {
         try {
           final products = (data)
               .map((x) => ProductModel.fromJson(x as Map<String, dynamic>))
               .toList();
           return Result.ok(products);
         } catch (e) {
-          return Result.error(Exception("Mahsulotlarni parse qilishda xato: $e"));
+          return Result.error(
+            Exception("Mahsulotlarni parse qilishda xato: $e"),
+          );
         }
       },
     );
@@ -45,15 +50,17 @@ class ProductRepository {
     );
 
     return result.fold(
-          (error) => Result.error(error),
-          (data) {
+      (error) => Result.error(error),
+      (data) {
         try {
           final products = data
               .map((e) => SavedProductModel.fromJson(e as Map<String, dynamic>))
               .toList();
           return Result.ok(products);
         } catch (e) {
-          return Result.error(Exception("Saqlangan mahsulotlarni parse qilishda xato: $e"));
+          return Result.error(
+            Exception("Saqlangan mahsulotlarni parse qilishda xato: $e"),
+          );
         }
       },
     );

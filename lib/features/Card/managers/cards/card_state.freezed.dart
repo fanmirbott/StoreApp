@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CardState {
 
- Status get status; String? get errorMessage; List<CardModel> get cards;
+ Status get status; Status get createStatus; Status get deleteStatus; String? get errorMessage; List<CardModel> get cards;
 /// Create a copy of CardState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CardStateCopyWith<CardState> get copyWith => _$CardStateCopyWithImpl<CardState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CardState&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other.cards, cards));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CardState&&(identical(other.status, status) || other.status == status)&&(identical(other.createStatus, createStatus) || other.createStatus == createStatus)&&(identical(other.deleteStatus, deleteStatus) || other.deleteStatus == deleteStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other.cards, cards));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,errorMessage,const DeepCollectionEquality().hash(cards));
+int get hashCode => Object.hash(runtimeType,status,createStatus,deleteStatus,errorMessage,const DeepCollectionEquality().hash(cards));
 
 @override
 String toString() {
-  return 'CardState(status: $status, errorMessage: $errorMessage, cards: $cards)';
+  return 'CardState(status: $status, createStatus: $createStatus, deleteStatus: $deleteStatus, errorMessage: $errorMessage, cards: $cards)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CardStateCopyWith<$Res>  {
   factory $CardStateCopyWith(CardState value, $Res Function(CardState) _then) = _$CardStateCopyWithImpl;
 @useResult
 $Res call({
- Status status, String? errorMessage, List<CardModel> cards
+ Status status, Status createStatus, Status deleteStatus, String? errorMessage, List<CardModel> cards
 });
 
 
@@ -62,9 +62,11 @@ class _$CardStateCopyWithImpl<$Res>
 
 /// Create a copy of CardState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? errorMessage = freezed,Object? cards = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? createStatus = null,Object? deleteStatus = null,Object? errorMessage = freezed,Object? cards = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,createStatus: null == createStatus ? _self.createStatus : createStatus // ignore: cast_nullable_to_non_nullable
+as Status,deleteStatus: null == deleteStatus ? _self.deleteStatus : deleteStatus // ignore: cast_nullable_to_non_nullable
 as Status,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,cards: null == cards ? _self.cards : cards // ignore: cast_nullable_to_non_nullable
 as List<CardModel>,
@@ -152,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  String? errorMessage,  List<CardModel> cards)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<CardModel> cards)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CardState() when $default != null:
-return $default(_that.status,_that.errorMessage,_that.cards);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.cards);case _:
   return orElse();
 
 }
@@ -173,10 +175,10 @@ return $default(_that.status,_that.errorMessage,_that.cards);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  String? errorMessage,  List<CardModel> cards)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<CardModel> cards)  $default,) {final _that = this;
 switch (_that) {
 case _CardState():
-return $default(_that.status,_that.errorMessage,_that.cards);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.cards);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +195,10 @@ return $default(_that.status,_that.errorMessage,_that.cards);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  String? errorMessage,  List<CardModel> cards)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<CardModel> cards)?  $default,) {final _that = this;
 switch (_that) {
 case _CardState() when $default != null:
-return $default(_that.status,_that.errorMessage,_that.cards);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.cards);case _:
   return null;
 
 }
@@ -208,10 +210,12 @@ return $default(_that.status,_that.errorMessage,_that.cards);case _:
 
 
 class _CardState implements CardState {
-  const _CardState({required this.status, this.errorMessage, required final  List<CardModel> cards}): _cards = cards;
+  const _CardState({required this.status, required this.createStatus, required this.deleteStatus, this.errorMessage, required final  List<CardModel> cards}): _cards = cards;
   
 
 @override final  Status status;
+@override final  Status createStatus;
+@override final  Status deleteStatus;
 @override final  String? errorMessage;
  final  List<CardModel> _cards;
 @override List<CardModel> get cards {
@@ -231,16 +235,16 @@ _$CardStateCopyWith<_CardState> get copyWith => __$CardStateCopyWithImpl<_CardSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CardState&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other._cards, _cards));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CardState&&(identical(other.status, status) || other.status == status)&&(identical(other.createStatus, createStatus) || other.createStatus == createStatus)&&(identical(other.deleteStatus, deleteStatus) || other.deleteStatus == deleteStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other._cards, _cards));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,errorMessage,const DeepCollectionEquality().hash(_cards));
+int get hashCode => Object.hash(runtimeType,status,createStatus,deleteStatus,errorMessage,const DeepCollectionEquality().hash(_cards));
 
 @override
 String toString() {
-  return 'CardState(status: $status, errorMessage: $errorMessage, cards: $cards)';
+  return 'CardState(status: $status, createStatus: $createStatus, deleteStatus: $deleteStatus, errorMessage: $errorMessage, cards: $cards)';
 }
 
 
@@ -251,7 +255,7 @@ abstract mixin class _$CardStateCopyWith<$Res> implements $CardStateCopyWith<$Re
   factory _$CardStateCopyWith(_CardState value, $Res Function(_CardState) _then) = __$CardStateCopyWithImpl;
 @override @useResult
 $Res call({
- Status status, String? errorMessage, List<CardModel> cards
+ Status status, Status createStatus, Status deleteStatus, String? errorMessage, List<CardModel> cards
 });
 
 
@@ -268,9 +272,11 @@ class __$CardStateCopyWithImpl<$Res>
 
 /// Create a copy of CardState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? errorMessage = freezed,Object? cards = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? createStatus = null,Object? deleteStatus = null,Object? errorMessage = freezed,Object? cards = null,}) {
   return _then(_CardState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,createStatus: null == createStatus ? _self.createStatus : createStatus // ignore: cast_nullable_to_non_nullable
+as Status,deleteStatus: null == deleteStatus ? _self.deleteStatus : deleteStatus // ignore: cast_nullable_to_non_nullable
 as Status,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,cards: null == cards ? _self._cards : cards // ignore: cast_nullable_to_non_nullable
 as List<CardModel>,

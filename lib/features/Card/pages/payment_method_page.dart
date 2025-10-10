@@ -8,9 +8,9 @@ import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
-import 'package:storeapp/data/repositories/card/card_list_repository.dart';
-import 'package:storeapp/features/Card/managers/cardsGet/card_bloc.dart';
-import 'package:storeapp/features/Card/managers/cardsGet/card_state.dart';
+import 'package:storeapp/features/Card/managers/cards/card_bloc.dart';
+import '../../../data/repositories/card_repository.dart';
+import '../managers/cards/card_state.dart';
 import '../widget/add_card_button.dart';
 
 class PaymentMethodPage extends StatefulWidget {
@@ -23,20 +23,60 @@ class PaymentMethodPage extends StatefulWidget {
 class _PaymentMethodPageState extends State<PaymentMethodPage> {
   String? selectedCard;
 
+  void _showDeleteConfirmation(BuildContext context, dynamic card) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          padding: EdgeInsets.all(20.w),
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.delete, color: Colors.red),
+                title: Text('Kartani o‘chirish: **** **** **** ${card.cardNumber.substring(card.cardNumber.length - 4)}', style: const TextStyle(color: Colors.red)),
+                onTap: () {
+                  Navigator.pop(context);
+                  context.read<CardBloc>().add(CardDelete(cardId: card.id));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.close),
+                title: const Text('Bekor qilish'),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CardBloc(
-        cardRepo: context.read<CardListRepository>(),
-      )..add(CardLoading()),
-      child: BlocBuilder<CardBloc, CardState>(
+        cardRepo: context.read<CardRepository>(),
+      ),
+      child: BlocConsumer<CardBloc, CardState>(
+        listener: (context, state) {
+          if (state.deleteStatus == Status.error && state.errorMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Delete Error: ${state.errorMessage}')),
+            );
+          }
+          if (state.deleteStatus == Status.success) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Karta muvaffaqiyatli o‘chirildi.')),
+            );
+          }
+        },
         builder: (context, state) {
-          if (state.status == Status.loading) {
+          if (state.status == Status.loading && state.cards.isEmpty) {
             return const Scaffold(
               body: Center(child: CircularProgressIndicator()),
             );
           }
-          if (state.status == Status.error) {
+          if (state.status == Status.error && state.cards.isEmpty) {
             return Scaffold(
               body: Center(
                 child: Text(
@@ -46,11 +86,12 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
               ),
             );
           }
+
           final cards = state.cards;
           return Scaffold(
             appBar: const AppBarWidgets(text: 'Payment Method'),
             body: Padding(
-              padding: EdgeInsetsGeometry.only(right: 24, left: 24, bottom: 40),
+              padding: EdgeInsets.only(right: 24, left: 24, bottom: 40.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -75,30 +116,45 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                         final masked = card.cardNumber.length >= 4
                             ? '**** **** **** ${card.cardNumber.substring(card.cardNumber.length - 4)}'
                             : card.cardNumber;
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 12.h),
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          height: 60.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.r),
-                            border: Border.all(color: AppColors.primary100),
-                          ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(AppIcons.bxlVisa),
-                              SizedBox(width: 12.w),
-                              Text(masked),
-                              const Spacer(),
-                              Radio<String>(
-                                value: masked,
-                                groupValue: selectedCard,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedCard = value;
-                                  });
-                                },
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 12.h),
+                          child: InkWell(
+                            onLongPress: () {
+                              _showDeleteConfirmation(context, card);
+                            },
+                            borderRadius: BorderRadius.circular(10.r),
+                            onTap: (){
+                              setState(() {
+                                selectedCard = masked;
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              height: 60.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.r),
+                                border: Border.all(
+                                  color: selectedCard == masked ? AppColors.primary : AppColors.primary100,
+                                ),
                               ),
-                            ],
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(AppIcons.bxlVisa),
+                                  SizedBox(width: 12.w),
+                                  Text(masked),
+                                  const Spacer(),
+                                  Radio<String>(
+                                    value: masked,
+                                    groupValue: selectedCard,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedCard = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -106,10 +162,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                   ),
                   AddCardButton(
                     onTap: () async {
-                      final newCard = await context.push(Routes.newCardPage);
-                      if (newCard != null && newCard is String) {
-                        context.read<CardBloc>().add(CardLoading());
-                      }
+                      await context.push(Routes.newCardPage);
                     },
                   ),
                 ],

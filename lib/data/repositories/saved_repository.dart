@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 
 class SavedRepository {
   final ApiClient client;
+
   SavedRepository({required this.client});
 
   Future<Either<Exception, void>> saveProduct(int productId) async {

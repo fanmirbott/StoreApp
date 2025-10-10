@@ -13,11 +13,4 @@ class CardModel {
       cardNumber: json['cardNumber'] ?? '',
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'cardNumber': cardNumber,
-    };
-  }
 }

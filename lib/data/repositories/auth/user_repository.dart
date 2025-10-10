@@ -1,6 +1,6 @@
 import '../../../core/client.dart';
 import '../../../core/utils/result.dart';
-import '../../models/me_model.dart';
+import '../../models/user_model.dart';
 
 class UserRepository {
   final ApiClient _client;
