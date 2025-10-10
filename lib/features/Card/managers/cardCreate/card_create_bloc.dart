@@ -6,7 +6,8 @@ import 'card_create_state.dart';
 class CardCreateBloc extends Bloc<CardCreateEvent, CardCreateState> {
   final CardCreateRepository repository;
 
-  CardCreateBloc({required this.repository}) : super(const CardCreateState.initial()) {
+  CardCreateBloc({required this.repository})
+      : super(const CardCreateState.initial()) {
     on<CardCreateEvent>((event, emit) async {
       await event.map(
         create: (e) async {
@@ -14,10 +15,8 @@ class CardCreateBloc extends Bloc<CardCreateEvent, CardCreateState> {
           final result = await repository.postCard(
             cardNumber: e.cardNumber,
             expiryDate: e.expiryDate,
-            cvv: e.cvv,
-            holderName: e.holderName,
+            securityCode: e.securityCode,
           );
-
           result.fold(
                 (err) => emit(CardCreateState.failure(err.toString())),
                 (data) => emit(CardCreateState.success(data)),

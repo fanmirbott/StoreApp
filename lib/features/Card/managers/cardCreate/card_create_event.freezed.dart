@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CardCreateEvent {
 
- String get cardNumber; String get expiryDate; String get cvv; String get holderName;
+ String get cardNumber; String get expiryDate; String get securityCode;
 /// Create a copy of CardCreateEvent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CardCreateEventCopyWith<CardCreateEvent> get copyWith => _$CardCreateEventCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CardCreateEvent&&(identical(other.cardNumber, cardNumber) || other.cardNumber == cardNumber)&&(identical(other.expiryDate, expiryDate) || other.expiryDate == expiryDate)&&(identical(other.cvv, cvv) || other.cvv == cvv)&&(identical(other.holderName, holderName) || other.holderName == holderName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CardCreateEvent&&(identical(other.cardNumber, cardNumber) || other.cardNumber == cardNumber)&&(identical(other.expiryDate, expiryDate) || other.expiryDate == expiryDate)&&(identical(other.securityCode, securityCode) || other.securityCode == securityCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,cardNumber,expiryDate,cvv,holderName);
+int get hashCode => Object.hash(runtimeType,cardNumber,expiryDate,securityCode);
 
 @override
 String toString() {
-  return 'CardCreateEvent(cardNumber: $cardNumber, expiryDate: $expiryDate, cvv: $cvv, holderName: $holderName)';
+  return 'CardCreateEvent(cardNumber: $cardNumber, expiryDate: $expiryDate, securityCode: $securityCode)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CardCreateEventCopyWith<$Res>  {
   factory $CardCreateEventCopyWith(CardCreateEvent value, $Res Function(CardCreateEvent) _then) = _$CardCreateEventCopyWithImpl;
 @useResult
 $Res call({
- String cardNumber, String expiryDate, String cvv, String holderName
+ String cardNumber, String expiryDate, String securityCode
 });
 
 
@@ -62,12 +62,11 @@ class _$CardCreateEventCopyWithImpl<$Res>
 
 /// Create a copy of CardCreateEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? cardNumber = null,Object? expiryDate = null,Object? cvv = null,Object? holderName = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cardNumber = null,Object? expiryDate = null,Object? securityCode = null,}) {
   return _then(_self.copyWith(
 cardNumber: null == cardNumber ? _self.cardNumber : cardNumber // ignore: cast_nullable_to_non_nullable
 as String,expiryDate: null == expiryDate ? _self.expiryDate : expiryDate // ignore: cast_nullable_to_non_nullable
-as String,cvv: null == cvv ? _self.cvv : cvv // ignore: cast_nullable_to_non_nullable
-as String,holderName: null == holderName ? _self.holderName : holderName // ignore: cast_nullable_to_non_nullable
+as String,securityCode: null == securityCode ? _self.securityCode : securityCode // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -153,10 +152,10 @@ return create(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String cardNumber,  String expiryDate,  String cvv,  String holderName)?  create,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String cardNumber,  String expiryDate,  String securityCode)?  create,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Create() when create != null:
-return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case _:
+return create(_that.cardNumber,_that.expiryDate,_that.securityCode);case _:
   return orElse();
 
 }
@@ -174,10 +173,10 @@ return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String cardNumber,  String expiryDate,  String cvv,  String holderName)  create,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String cardNumber,  String expiryDate,  String securityCode)  create,}) {final _that = this;
 switch (_that) {
 case _Create():
-return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case _:
+return create(_that.cardNumber,_that.expiryDate,_that.securityCode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +193,10 @@ return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String cardNumber,  String expiryDate,  String cvv,  String holderName)?  create,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String cardNumber,  String expiryDate,  String securityCode)?  create,}) {final _that = this;
 switch (_that) {
 case _Create() when create != null:
-return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case _:
+return create(_that.cardNumber,_that.expiryDate,_that.securityCode);case _:
   return null;
 
 }
@@ -209,13 +208,12 @@ return create(_that.cardNumber,_that.expiryDate,_that.cvv,_that.holderName);case
 
 
 class _Create implements CardCreateEvent {
-  const _Create({required this.cardNumber, required this.expiryDate, required this.cvv, required this.holderName});
+  const _Create({required this.cardNumber, required this.expiryDate, required this.securityCode});
   
 
 @override final  String cardNumber;
 @override final  String expiryDate;
-@override final  String cvv;
-@override final  String holderName;
+@override final  String securityCode;
 
 /// Create a copy of CardCreateEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +225,16 @@ _$CreateCopyWith<_Create> get copyWith => __$CreateCopyWithImpl<_Create>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Create&&(identical(other.cardNumber, cardNumber) || other.cardNumber == cardNumber)&&(identical(other.expiryDate, expiryDate) || other.expiryDate == expiryDate)&&(identical(other.cvv, cvv) || other.cvv == cvv)&&(identical(other.holderName, holderName) || other.holderName == holderName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Create&&(identical(other.cardNumber, cardNumber) || other.cardNumber == cardNumber)&&(identical(other.expiryDate, expiryDate) || other.expiryDate == expiryDate)&&(identical(other.securityCode, securityCode) || other.securityCode == securityCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,cardNumber,expiryDate,cvv,holderName);
+int get hashCode => Object.hash(runtimeType,cardNumber,expiryDate,securityCode);
 
 @override
 String toString() {
-  return 'CardCreateEvent.create(cardNumber: $cardNumber, expiryDate: $expiryDate, cvv: $cvv, holderName: $holderName)';
+  return 'CardCreateEvent.create(cardNumber: $cardNumber, expiryDate: $expiryDate, securityCode: $securityCode)';
 }
 
 
@@ -247,7 +245,7 @@ abstract mixin class _$CreateCopyWith<$Res> implements $CardCreateEventCopyWith<
   factory _$CreateCopyWith(_Create value, $Res Function(_Create) _then) = __$CreateCopyWithImpl;
 @override @useResult
 $Res call({
- String cardNumber, String expiryDate, String cvv, String holderName
+ String cardNumber, String expiryDate, String securityCode
 });
 
 
@@ -264,12 +262,11 @@ class __$CreateCopyWithImpl<$Res>
 
 /// Create a copy of CardCreateEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? cardNumber = null,Object? expiryDate = null,Object? cvv = null,Object? holderName = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cardNumber = null,Object? expiryDate = null,Object? securityCode = null,}) {
   return _then(_Create(
 cardNumber: null == cardNumber ? _self.cardNumber : cardNumber // ignore: cast_nullable_to_non_nullable
 as String,expiryDate: null == expiryDate ? _self.expiryDate : expiryDate // ignore: cast_nullable_to_non_nullable
-as String,cvv: null == cvv ? _self.cvv : cvv // ignore: cast_nullable_to_non_nullable
-as String,holderName: null == holderName ? _self.holderName : holderName // ignore: cast_nullable_to_non_nullable
+as String,securityCode: null == securityCode ? _self.securityCode : securityCode // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

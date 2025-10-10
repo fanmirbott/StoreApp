@@ -9,16 +9,14 @@ class CardCreateRepository {
   Future<Result<Map<String, dynamic>>> postCard({
     required String cardNumber,
     required String expiryDate,
-    required String cvv,
-    required String holderName,
+    required String securityCode,
   }) async {
     final result = await _client.post<Map<String, dynamic>>(
       '/cards/create',
       data: {
         'cardNumber': cardNumber,
         'expiryDate': expiryDate,
-        'cvv': cvv,
-        'holderName': holderName,
+        'securityCode': securityCode,
       },
     );
 
@@ -27,4 +25,6 @@ class CardCreateRepository {
           (value) => Result.ok(value),
     );
   }
+
+
 }

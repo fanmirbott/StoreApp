@@ -11,6 +11,7 @@ class TextFieldAndText extends StatelessWidget {
   final Widget? suffixIcon;
   final Function(String)? onChanged;
   final Widget? prefixWidget;
+  final double? width;
 
   const TextFieldAndText({
     super.key,
@@ -22,6 +23,7 @@ class TextFieldAndText extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.prefixWidget,
+    this.width,
   });
 
   @override
@@ -50,7 +52,6 @@ class TextFieldAndText extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             prefix: prefixWidget,
-
             hintText: hintText,
             hintStyle: const TextStyle(color: primary200),
             errorText: errorText,

@@ -7,7 +7,6 @@ abstract class CardCreateEvent with _$CardCreateEvent {
   const factory CardCreateEvent.create({
     required String cardNumber,
     required String expiryDate,
-    required String cvv,
-    required String holderName,
+    required String securityCode,
   }) = _Create;
 }

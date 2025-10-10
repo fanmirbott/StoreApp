@@ -2,7 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/core/client.dart';
 import 'package:storeapp/core/routing/routes.dart';
+import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/data/repositories/auth/reset_email_repository.dart';
+import 'package:storeapp/features/account/pages/address_page.dart';
+import 'package:storeapp/features/account/pages/new_address_page.dart';
 import 'package:storeapp/features/account/pages/account_page.dart';
 import 'package:storeapp/features/account/pages/faqs_page.dart';
 import 'package:storeapp/features/account/pages/help_center_page.dart';
@@ -16,6 +19,7 @@ import 'package:storeapp/features/auth/pages/reset_password_page.dart';
 import 'package:storeapp/features/auth/pages/sign_up_page.dart';
 import 'package:storeapp/features/auth/pages/verification_page.dart';
 import 'package:storeapp/features/Card/pages/new_card_page.dart';
+import 'package:storeapp/features/cartPage/pages/check_out_page.dart';
 import 'package:storeapp/features/cartPage/pages/my_cart_page.dart';
 import 'package:storeapp/features/home/pages/home_page.dart';
 import 'package:storeapp/features/home/pages/notification_page.dart';
@@ -137,6 +141,18 @@ final router = GoRouter(
     GoRoute(
       path: Routes.myOrdersPage,
       builder: (context, state) => MyOrdersPage(),
+    ),
+    GoRoute(
+      path: Routes.newAddressPage,
+      builder: (context, state) => NewAddressPage(),
+    ),
+    GoRoute(
+      path: Routes.addressPage,
+      builder: (context, state) => AddressPage(),
+    ),
+    GoRoute(
+      path: Routes.checkOutPage,
+      builder: (context, state) => CheckOutPage(),
     ),
   ],
 );

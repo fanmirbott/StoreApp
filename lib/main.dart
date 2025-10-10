@@ -5,15 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:storeapp/core/routing/router.dart';
+import 'package:storeapp/data/repositories/address_repository.dart';
 import 'package:storeapp/data/repositories/card/card_create_repository.dart';
+import 'package:storeapp/data/repositories/card/card_list_repository.dart';
 import 'package:storeapp/data/repositories/notification_repository.dart';
 import 'package:storeapp/data/repositories/products/cart_repository.dart';
 import 'package:storeapp/data/repositories/products/product_detail_repository.dart';
 import 'package:storeapp/data/repositories/saved_repository.dart';
+import 'package:storeapp/features/account/managers/addressBloc/address_bloc.dart';
 import 'core/client.dart';
 import 'data/repositories/auth/user_repository.dart';
 import 'data/repositories/products/product_repository.dart';
 import 'features/Card/managers/cardCreate/card_create_bloc.dart';
+import 'features/Card/managers/cardsGet/card_bloc.dart';
 import 'features/account/managers/updateUserBloc/update_user_bloc.dart';
 import 'features/account/managers/userBloc/user_bloc.dart';
 import 'features/cartPage/managers/cart/cart_bloc.dart';
@@ -58,7 +62,14 @@ class MyApp extends StatelessWidget {
           create: (context) => CardCreateRepository(client: context.read()),
         ),
         RepositoryProvider(
-          create: (context) => UserRepository(client: context.read<ApiClient>()),
+          create: (context) =>
+              UserRepository(client: context.read<ApiClient>()),
+        ),
+        RepositoryProvider(
+          create: (context) => AddressRepository(client: context.read()),
+        ),
+        RepositoryProvider(
+          create: (context) => CardListRepository(client: context.read()),
         ),
       ],
       child: MultiBlocProvider(
@@ -87,6 +98,17 @@ class MyApp extends StatelessWidget {
             create: (context) => UpdateUserBloc(
               userRepository: context.read<UserRepository>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => AddressBloc(
+              context.read(),
+              addressRepo: context.read<AddressRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => CardBloc(
+              cardRepo: context.read<CardListRepository>(),
+            )..add(CardLoading()),
           ),
         ],
         child: MultiProvider(

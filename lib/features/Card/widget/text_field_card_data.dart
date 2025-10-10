@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +29,18 @@ class CardDateInputFormatter extends TextInputFormatter {
       selection: TextSelection.collapsed(offset: buffer.length),
     );
   }
+}
+
+String normalizeExpiryDate(String input) {
+  if (input.contains('/')) {
+    final parts = input.split('/');
+    if (parts.length == 2) {
+      final month = parts[0].padLeft(2, '0');
+      final year = '20${parts[1]}';
+      return '$year-$month-01';
+    }
+  }
+  return input;
 }
 
 class TextFieldCardData extends StatelessWidget {

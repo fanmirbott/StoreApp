@@ -22,4 +22,7 @@ class Routes {
   static const myDetailsPage = '/myDetailsPage';
   static const faqsPage = '/faqsPage';
   static const myOrdersPage = '/myOrdersPage';
+  static const addressPage = '/addressPage';
+  static const newAddressPage = '/newAddressPage';
+  static const checkOutPage = '/checkOutPage';
 }

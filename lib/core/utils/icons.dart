@@ -20,7 +20,7 @@ class AppIcons {
   static const String correct = 'assets/icons/correct.svg';
   static const String details = 'assets/icons/Details.svg';
   static const String discountDuotone = 'assets/icons/discount-duotone.svg';
-  static const String edit = 'assets/icons/edit.svg';
+  static const String edit = 'assets/icons/Edit.svg';
   static const String eye = 'assets/icons/Eye.svg';
   static const String eyeOff = 'assets/icons/eye-off.svg';
   static const String facebook = 'assets/icons/Facebook.svg';
@@ -33,9 +33,9 @@ class AppIcons {
   static const String image = 'assets/icons/image.svg';
   static const String instagram = 'assets/icons/Instagram.svg';
   static const String like = 'assets/icons/like.svg';
-  static const String location = 'assets/icons/location.svg';
-  static const String locationDuotone = 'assets/icons/location-duotone.svg';
-  static const String logosApplePay = 'assets/icons/logos-apple-pay.svg';
+  static const String location = 'assets/icons/Location.svg';
+  static const String locationDuotone = 'assets/icons/Location-duotone.svg';
+  static const String logosApplePay = 'assets/icons/logos_apple-pay.svg';
   static const String logosFacebook = 'assets/icons/logos_facebook.svg';
   static const String logosGoogleIcon = 'assets/icons/logos_google-icon.svg';
   static const String logout = 'assets/icons/Logout.svg';

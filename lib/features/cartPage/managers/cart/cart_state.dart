@@ -1,21 +1,18 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:storeapp/core/utils/status.dart';
-
-import '../../../../data/models/cart_item_model.dart';
-
-part 'cart_state.freezed.dart';
+part of 'cart_bloc.dart';
 
 @freezed
 abstract class CartState with _$CartState {
-   factory CartState({
+  const factory CartState({
     required Status status,
     String? errorMessage,
-    required CartResponseModel? cart,
+    CartResponseModel? cart,
+    CartItemModel? lastAddedItem,
   }) = _CartState;
 
-  factory CartState.initial() => CartState(
+  factory CartState.initial() => const CartState(
     status: Status.loading,
     errorMessage: null,
     cart: null,
+    lastAddedItem: null,
   );
 }
