@@ -30,7 +30,7 @@ class AppIcons {
   static const String heartFilled = 'assets/icons/Heart-filled.svg';
   static const String heartDuotone = 'assets/icons/Heart-duotone.svg';
   static const String home = 'assets/icons/Home.svg';
-  static const String image = 'assets/icons/image.svg';
+  static const String image = 'assets/icons/Image.svg';
   static const String instagram = 'assets/icons/Instagram.svg';
   static const String like = 'assets/icons/like.svg';
   static const String location = 'assets/icons/Location.svg';

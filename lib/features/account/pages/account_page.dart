@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/features/account/widgets/button_widget.dart';
+import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 import '../../../core/utils/icons.dart';
 import '../../common/widgets/bottom_navigation_bar_app.dart';
 
@@ -14,29 +15,16 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Account',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset(AppIcons.bell),
-          ),
-        ],
-      ),
+      appBar: AppBarWidgets(text: 'Account'),
       body: Padding(
         padding: EdgeInsetsGeometry.only(right: 24, left: 24),
         child: Column(
           children: [
             Divider(),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                context.push(Routes.myOrdersPage);
+              },
               child: SizedBox(
                 height: 57.h,
                 child: Row(

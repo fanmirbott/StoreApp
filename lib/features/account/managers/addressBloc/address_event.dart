@@ -1,3 +1,15 @@
 part of 'address_bloc.dart';
-sealed class AddressEvent{}
-final class AddressLoading extends AddressEvent{}
+
+abstract class AddressEvent {}
+
+class AddressLoading extends AddressEvent {}
+
+class AddressPost extends AddressEvent {
+  final AddressModel address;
+  AddressPost(this.address);
+}
+
+class AddressDelete extends AddressEvent {
+  final int id;
+  AddressDelete(this.id);
+}

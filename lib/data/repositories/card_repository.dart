@@ -1,53 +1,59 @@
-import 'package:storeapp/core/client.dart';
-import 'package:storeapp/core/utils/result.dart';
-import 'package:storeapp/data/models/card_model.dart';
+import '../../core/client.dart';
+import '../../core/utils/result.dart';
+import '../models/card_model.dart';
 
 class CardRepository {
   final ApiClient _client;
 
   CardRepository({required ApiClient client}) : _client = client;
 
-  Future<Result<Map<String, dynamic>>> postCard({
-    required String cardNumber,
-    required String expiryDate,
-    required String securityCode,
-  }) async {
-    final result = await _client.post<Map<String, dynamic>>(
-      '/cards/create',
-      data: {
-        'cardNumber': cardNumber,
-        'expiryDate': expiryDate,
-        'securityCode': securityCode,
-      },
-    );
-
-    return result.fold(
-      (error) => Result.error(error),
-      (value) => Result.ok(value),
-    );
-  }
-
   Future<Result<List<CardModel>>> getCards() async {
-    final result = await _client.get<List<dynamic>>('/cards/list');
+    final result = await _client.get<List<dynamic>>('/cards');
 
     return result.fold(
-      (error) => Result.error(error),
-      (data) {
-        try {
-          final cards = data.map((e) => CardModel.fromJson(e)).toList();
+          (error) => Result.error(error),
+          (data) {
+       try {
+          final cards = data
+              .map((e) => CardModel.fromJson(e as Map<String, dynamic>))
+              .toList();
           return Result.ok(cards);
         } catch (e) {
-          return Result.error(Exception(e));
+          return Result.error(Exception('Parsing error: $e'));
         }
       },
     );
   }
 
-  Future<Result<void>> deleteCard(int cardId) async {
-    final result = await _client.delete<dynamic>('/cards/delete/$cardId');
+  Future<Result<CardModel>> postCard({
+    required String cardNumber,
+    required String expiryDate,
+    required String securityCode,
+  }) async {
+    final data = {
+      "cardNumber": cardNumber,
+      "expiryDate": expiryDate,
+      "securityCode": securityCode,
+    };
+
+    final result = await _client.post<Map<String, dynamic>>(
+      '/cards',
+      data: data,
+    );
+
     return result.fold(
-      (error) => Result.error(error),
-      (_) => Result.ok(null),
+          (error) => Result.error(error),
+          (data) => Result.ok(CardModel.fromJson(data)),
+    );
+  }
+
+
+  Future<Result<void>> deleteCard(int id) async {
+    final result = await _client.delete('/cards/$id');
+
+    return result.fold(
+          (error) => Result.error(error),
+          (_) => Result.ok(null),
     );
   }
 }

@@ -6,10 +6,18 @@ import 'package:go_router/go_router.dart';
 import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/status.dart';
-import 'package:storeapp/features/home/managers/productDetail/product_detail_bloc.dart';
-import 'package:storeapp/features/home/managers/productDetail/product_detail_state.dart';
-import '../../../core/utils/icons.dart';
+import 'package:storeapp/core/utils/icons.dart';
+import 'package:storeapp/core/client.dart';
+import 'package:storeapp/data/models/product_model.dart';
+import 'package:storeapp/features/home/managers/review/review_bloc.dart';
+import 'package:storeapp/features/home/managers/review/review_state.dart';
+import 'package:storeapp/features/home/managers/saved/saved_bloc.dart';
+import '../../../data/models/review_model.dart';
+import '../../../data/repositories/review_repository.dart';
 import '../../cartPage/managers/cart/cart_bloc.dart';
+import '../../home/managers/productDetail/product_detail_bloc.dart';
+import '../../home/managers/productDetail/product_detail_state.dart';
+import '../managers/review/review_events.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int productId;
@@ -32,33 +40,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       providers: [
         BlocProvider(
           create: (context) =>
-          ProductDetailBloc(detailRepository: context.read())
-            ..add(ProductDetailLoading(id: widget.productId)),
+              ProductDetailBloc(detailRepository: context.read())
+                ..add(ProductDetailLoading(id: widget.productId)),
         ),
         BlocProvider(
           create: (context) =>
-          CartBloc(cartRepository: context.read())
-            ..add(const CartEvent.cartLoading()),
+              CartBloc(cartRepository: context.read())
+                ..add(const CartEvent.cartLoading()),
+        ),
+        BlocProvider(
+          create: (context) => ReviewBloc(
+            ReviewRepository(apiClient: context.read<ApiClient>()),
+          )..add(FetchReviews(widget.productId)),
         ),
       ],
       child: BlocConsumer<CartBloc, CartState>(
         listener: (context, cartState) {
-          if (cartState.status == Status.success && cartState.lastAddedItem != null) {
-            // Savatga mahsulot muvaffaqiyatli qo'shildi, endi o'tamiz
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          if (cartState.status == Status.success &&
+              cartState.lastAddedItem != null) {
             context.push(Routes.cartPage);
-          } else if (cartState.status == Status.error && cartState.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(cartState.errorMessage!)),
-            );
           }
         },
         builder: (context, cartState) {
-          final isAddingToCart = cartState.status == Status.loading && cartState.lastAddedItem == null;
+          final isAddingToCart =
+              cartState.status == Status.loading &&
+              cartState.lastAddedItem == null;
 
           return BlocBuilder<ProductDetailBloc, ProductDetailState>(
             builder: (context, state) {
               switch (state.status) {
+                case Status.initial:
                 case Status.loading:
                   return const Scaffold(
                     body: Center(child: CircularProgressIndicator()),
@@ -103,14 +114,55 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: Image.network(
-                                product.productImages.first.image,
-                                width: 341.w,
-                                height: 368.53.h,
-                                fit: BoxFit.cover,
-                              ),
+                            Stack(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10.r),
+                                  child: Image.network(
+                                    product.productImages.first.image,
+                                    width: 341.w,
+                                    height: 368.53.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 16.h,
+                                  right: 16.w,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      final savedBloc = context
+                                          .read<SavedBloc>();
+                                      if (product.isLiked) {
+                                        savedBloc.add(
+                                          UnSaveProductEvent(product as ProductModel),
+                                        );
+                                      } else {
+                                        savedBloc.add(
+                                          SaveProductEvent(product as ProductModel),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
+                                        color: AppColors.white,
+                                      ),
+                                      alignment: Alignment.center,
+                                      width: 48.w,
+                                      height: 48.h,
+                                      child: SvgPicture.asset(
+                                        width: 25.w,
+                                        height: 25.h,
+                                        product.isLiked
+                                            ? AppIcons.heartFilled
+                                            : AppIcons.like,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: 12.h),
                             Text(
@@ -122,31 +174,28 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                             ),
                             SizedBox(height: 13.h),
-                            InkWell(
-                              onTap: () => context.push(Routes.reviewsPage),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(AppIcons.starRating),
-                                  SizedBox(width: 2.w),
-                                  Text(
-                                    "${product.rating.toStringAsFixed(1)}/5",
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.primary,
-                                    ),
+                            Row(
+                              children: [
+                                SvgPicture.asset(AppIcons.starRating),
+                                SizedBox(width: 2.w),
+                                Text(
+                                  "${product.rating.toStringAsFixed(1)}/5",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.primary,
                                   ),
-                                  SizedBox(width: 5.w),
-                                  Text(
-                                    "(${product.reviewsCount} reviews)",
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.primary500,
-                                    ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Text(
+                                  "(${product.reviewsCount} reviews)",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.primary500,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: 13.h),
                             Text(
@@ -171,9 +220,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               children: [
                                 ...List.generate(
                                   product.productSizes.length,
-                                      (index) {
+                                  (index) {
                                     final size = product.productSizes[index];
-                                    final isSelected = size.id == _selectedSizeId;
+                                    final isSelected =
+                                        size.id == _selectedSizeId;
                                     return Padding(
                                       padding: EdgeInsets.only(right: 10.w),
                                       child: GestureDetector(
@@ -198,8 +248,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                             ),
                                             color: isSelected
                                                 ? AppColors.primary.withOpacity(
-                                              0.1,
-                                            )
+                                                    0.1,
+                                                  )
                                                 : AppColors.white,
                                           ),
                                           child: Text(
@@ -216,6 +266,48 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   },
                                 ),
                               ],
+                            ),
+
+                            SizedBox(height: 32.h),
+                            const Divider(),
+                            SizedBox(height: 12.h),
+                            Text(
+                              "Reviews",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20.sp,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            SizedBox(height: 12.h),
+
+                            BlocBuilder<ReviewBloc, ReviewState>(
+                              builder: (context, state) {
+                                if (state is ReviewInitial ||
+                                    state is ReviewLoading) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (state is ReviewLoaded) {
+                                  if (state.reviews.isEmpty) {
+                                    return const Text("Hozircha sharh yo‘q.");
+                                  }
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: state.reviews.length,
+                                    itemBuilder: (context, i) =>
+                                        _buildSingleReview(
+                                          context,
+                                          state.reviews[i],
+                                        ),
+                                  );
+                                } else if (state is ReviewError) {
+                                  return Text("Xatolik: ${state.message}");
+                                }
+                                return const SizedBox.shrink();
+                              },
                             ),
                           ],
                         ),
@@ -254,19 +346,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             onTap: () {
                               if (_selectedSizeId == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text(
-                                      "Iltimos, o‘lchamni tanlang!")),
+                                  const SnackBar(
+                                    content: Text(
+                                      "Iltimos, o‘lchamni tanlang!",
+                                    ),
+                                  ),
                                 );
                                 return;
                               }
-
                               context.read<CartBloc>().add(
                                 CartItemAdded(
                                   productId: widget.productId,
                                   sizeId: _selectedSizeId!,
                                 ),
                               );
-                              // Navigatsiya BlocConsumer listenerida amalga oshiriladi
+                              context.push(Routes.cartPage);
                             },
                             child: Container(
                               width: 240.w,
@@ -279,29 +373,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               ),
                               child: isAddingToCart
                                   ? Center(
-                                child: CircularProgressIndicator(
-                                  color: AppColors.white,
-                                ),
-                              )
+                                      child: CircularProgressIndicator(
+                                        color: AppColors.white,
+                                      ),
+                                    )
                                   : Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    AppIcons.bag,
-                                    color: AppColors.white,
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Text(
-                                    'Add to Cart',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.white,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          AppIcons.bag,
+                                          colorFilter: ColorFilter.mode(
+                                            AppColors.white,
+                                            BlendMode.srcIn,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          'Add to Cart',
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
                             ),
                           ),
                         ],
@@ -312,6 +409,38 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildSingleReview(BuildContext context, ReviewModel review) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+          ),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: List.generate(5, (i) {
+              return Icon(
+                Icons.star,
+                color: i < review.rating.round()
+                    ? Colors.orange
+                    : (isDark ? Colors.grey[600] : Colors.grey[300]),
+                size: 16,
+              );
+            }),
+          ),
+          const SizedBox(height: 6),
+          Text(review.comment),
+        ],
       ),
     );
   }

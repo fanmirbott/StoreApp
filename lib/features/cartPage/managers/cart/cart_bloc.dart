@@ -96,9 +96,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     Emitter<CartState> emit,
   ) async {
     emit(state.copyWith(status: Status.loading, errorMessage: null));
-
     final result = await _cartRepository.deleteItemFromCart(event.productId);
-
     await result.fold(
       (error) async {
         emit(
@@ -109,23 +107,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
       },
       (_) async {
-        final updated = await _cartRepository.getCartItems();
-
-        updated.fold(
-          (err) => emit(
-            state.copyWith(
-              status: Status.error,
-              errorMessage: err.toString(),
-            ),
-          ),
-          (cart) => emit(
-            state.copyWith(
-              status: Status.success,
-              cart: cart,
-              lastAddedItem: null,
-            ),
-          ),
-        );
+        add(CartLoading());
       },
     );
   }

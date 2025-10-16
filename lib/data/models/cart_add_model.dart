@@ -6,5 +6,4 @@ class CartAddModel {
     required this.productId,
     required this.sizeId,
   });
-
 }

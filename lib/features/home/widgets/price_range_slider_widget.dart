@@ -3,14 +3,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/colors.dart';
 
 class PriceRangeSlider extends StatefulWidget {
-  const PriceRangeSlider({super.key});
+  final Function(double min, double max) onChanged;
+
+  const PriceRangeSlider({super.key, required this.onChanged});
 
   @override
   State<PriceRangeSlider> createState() => _PriceRangeSliderState();
 }
 
 class _PriceRangeSliderState extends State<PriceRangeSlider> {
-  RangeValues _values = const RangeValues(0, 19);
+  RangeValues _values = const RangeValues(0, 100);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class _PriceRangeSliderState extends State<PriceRangeSlider> {
             setState(() {
               _values = newValues;
             });
+            widget.onChanged(newValues.start, newValues.end);
           },
         ),
       ],

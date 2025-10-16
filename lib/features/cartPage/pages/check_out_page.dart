@@ -13,8 +13,10 @@ import 'package:storeapp/features/cartPage/managers/cart/cart_bloc.dart';
 import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 
 import '../../../core/utils/icons.dart';
+import '../../../data/models/orders_model.dart';
 import '../../Card/managers/cards/card_bloc.dart';
 import '../../Card/managers/cards/card_state.dart';
+import '../../account/managers/ordersBloc/orders_bloc.dart';
 
 class CheckOutPage extends StatefulWidget {
   const CheckOutPage({super.key});
@@ -39,6 +41,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
     controllerPromocode.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddressBloc, AddressState>(
@@ -64,6 +67,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
             if (address.isEmpty || cart == null) {
               return const Center(child: CircularProgressIndicator());
             }
+            if (cardState.cards.isEmpty) {
+              return Text('karta raqam yuq');
+            }
+
             return Scaffold(
               appBar: AppBarWidgets(text: 'Checkout'),
               body: SingleChildScrollView(
@@ -89,7 +96,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               ),
                               Spacer(),
                               TextButton(
-                                onPressed: (){
+                                onPressed: () {
                                   context.push(Routes.addressPage);
                                 },
                                 child: Text(
@@ -121,7 +128,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                address.first.title,
+                                address.first.nickname,
                                 style: TextStyle(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w600,
@@ -167,7 +174,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                   },
                                   child: Container(
                                     padding: EdgeInsetsGeometry.symmetric(
-                                      horizontal: 25,
+                                      horizontal: 25.h,
                                     ),
                                     height: 36.h,
                                     decoration: BoxDecoration(
@@ -210,49 +217,58 @@ class _CheckOutPageState extends State<CheckOutPage> {
                               }),
                             ],
                           ),
+                          if (selectPay == 0)
+                            Container(
+                              padding: EdgeInsetsGeometry.symmetric(
+                                horizontal: 20,
+                              ),
+                              width: 341.w,
+                              height: 52.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(color: AppColors.primary100),
+                              ),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    AppIcons.bxlVisa,
+                                    width: 144.w,
+                                    height: 14.h,
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                  SizedBox(
+                                    width: 8.w,
+                                  ),
+                                  Text(
+                                    '**** **** **** ${cardState.cards.first.cardNumber.substring(14)}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16.sp,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  InkWell(
+                                    onTap: () {
+                                      context.push(Routes.paymentMethodPage);
+                                    },
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    child: SvgPicture.asset(
+                                      AppIcons.edit,
+                                      width: 24.w,
+                                      height: 24.h,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (selectPay == 2)
+                            Image.network(
+                              'https://logodix.com/logo/27007.png',
+                              width: double.infinity,
+                              height: 60.h,
+                            ),
                         ],
-                      ),
-                      Container(
-                        padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
-                        width: 341.w,
-                        height: 52.h,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: AppColors.primary100),
-                        ),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppIcons.bxlVisa,
-                              width: 144.w,
-                              height: 14.h,
-                              fit: BoxFit.scaleDown,
-                            ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Text(
-                              '**** **** **** ${cardState.cards.first.cardNumber.substring(14)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                            Spacer(),
-                            InkWell(
-                              onTap: () {
-                                context.push(Routes.paymentMethodPage);
-                              },
-                              borderRadius: BorderRadius.circular(50.r),
-                              child: SvgPicture.asset(
-                                AppIcons.edit,
-                                width: 24.w,
-                                height: 24.h,
-                                fit: BoxFit.scaleDown,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       Divider(),
                       Column(
@@ -347,16 +363,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
-                                width: 279,
+                                width: 249.w,
                                 child: TextField(
                                   controller: controllerPromocode,
                                   decoration: InputDecoration(
                                     hintText: 'Enter promo code',
-                                    hintStyle: TextStyle(color: AppColors.primary200),
+                                    hintStyle: TextStyle(
+                                      color: AppColors.primary200,
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.r),
                                       borderSide: BorderSide(
-                                        color: AppColors.primary100
+                                        color: AppColors.primary100,
                                       ),
                                     ),
                                     focusedBorder: OutlineInputBorder(
@@ -367,15 +385,18 @@ class _CheckOutPageState extends State<CheckOutPage> {
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: const BorderSide(color: Colors.red),
+                                      borderSide: const BorderSide(
+                                        color: Colors.red,
+                                      ),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: const BorderSide(color: Colors.red),
+                                      borderSide: const BorderSide(
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ),
                                 ),
-
                               ),
                               Spacer(),
                               ButtonWidget(
@@ -392,11 +413,78 @@ class _CheckOutPageState extends State<CheckOutPage> {
                           ),
                           ButtonWidget(
                             width: 341.w,
-                            onTap: () {},
+                            onTap: () {
+                              if (cartState.cart == null || addressState.address.isEmpty) return;
+
+                              final card = cardState.cards.first;
+
+                              final orderPost = OrderPostModel(
+                                addressId: addressState.address.first.id!,
+                                paymentMethod: selectPay == 0
+                                    ? 'Card'
+                                    : selectPay == 1
+                                    ? 'Cash'
+                                    : 'Apple Pay',
+                                cardId: card.id,
+                              );
+
+                              context.read<OrdersBloc>().add(OrdersCreate(order: orderPost));
+
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.r),
+                                  ),
+                                  content: SizedBox(
+                                    width: 341.w,
+                                    height: 270.h,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          AppIcons.checkDoutone,
+                                          width: 78.w,
+                                          height: 78.h,
+                                        ),
+                                        SizedBox(height: 12.h),
+                                        Text(
+                                          'Congratulations!',
+                                          style: TextStyle(
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.primary,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.h),
+                                        Text(
+                                          'Your order has been placed.',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16.sp,
+                                            color: AppColors.primary500,
+                                          ),
+                                        ),
+                                        SizedBox(height: 24.h),
+                                        ButtonWidget(
+                                          width: 293.w,
+                                          onTap: () {
+                                            context.push(Routes.myOrdersPage);
+                                          },
+                                          text: 'Track Your Order',
+                                          buttonColor: AppColors.primary,
+                                          textColor: AppColors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                             text: 'Place Order',
                             buttonColor: AppColors.primary,
                             textColor: AppColors.white,
-                          ),
+                          )
                         ],
                       ),
                     ],

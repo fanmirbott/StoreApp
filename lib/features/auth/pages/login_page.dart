@@ -1,27 +1,23 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:storeapp/core/client.dart';
-import 'package:storeapp/data/repositories/auth/login_repository.dart';
-import 'package:storeapp/features/auth/managers/login_view_model.dart';
+import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/features/auth/widgets/auth_button_otp_send.dart';
 import 'package:storeapp/features/auth/widgets/text_field_and_text.dart';
 import '../../../core/routing/routes.dart';
 import '../../../core/utils/colors.dart';
 import '../../../core/utils/icons.dart';
+import '../managers/authBloc/auth_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(LoginRepository(client: ApiClient())),
-      child: const _LoginPageContent(),
-    );
+    return const _LoginPageContent();
   }
 }
 
@@ -86,199 +82,97 @@ class _LoginPageContentState extends State<_LoginPageContent> {
     super.dispose();
   }
 
-  void _onLogin() async {
+  void _onLogin() {
     if (!isFormValid) return;
 
-    final loginViewModel = context.read<LoginViewModel>();
-
-    await loginViewModel.login(controllerEmail.text, controllerPassword.text);
-
-    if (loginViewModel.token != null) {
-      context.go(Routes.homePage);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(loginViewModel.errorMessage ?? 'Login xato')),
-      );
-    }
+    context.read<AuthBloc>().add(
+      LoginRequested(
+        controllerEmail.text,
+        controllerPassword.text,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginViewModel>(
-      builder: (context, value, child) => Scaffold(
-        extendBody: true,
-        body: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 24,
-              left: 24,
-              top: 60,
-              bottom: 40,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Login to your account',
-                  style: TextStyle(
-                    fontSize: 32.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
-                  ),
-                ),
-                Text(
-                  'It’s great to see you again.',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.primary500,
-                  ),
-                ),
-                SizedBox(height: 24.h),
-                TextFieldAndText(
-                  controller: controllerEmail,
-                  text: "Email",
-                  hintText: 'Enter your email address',
-                  errorText: emailError,
-                ),
-                SizedBox(height: 16.h),
-                TextFieldAndText(
-                  obscureText: !visiblePass,
-                  controller: controllerPassword,
-                  text: 'Password',
-                  hintText: 'Enter your password',
-                  errorText: passwordError,
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      visiblePass = !visiblePass;
-                      setState(() {});
-                    },
-                    child: SvgPicture.asset(
-                      visiblePass ? AppIcons.eye : AppIcons.eyeOff,
-                      width: 24.w,
-                      height: 24.h,
-                      fit: BoxFit.scaleDown,
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.status == Status.success && state.token != null) {
+          context.go(Routes.homePage);
+        }
+        else if (state.status == Status.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(state.errorMessage ?? "Noma'lum Login xatosi")),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state.status == Status.loading;
+
+        return Scaffold(
+          extendBody: true,
+          body: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                right: 24,
+                left: 24,
+                top: 60,
+                bottom: 40,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Login to your account',
+                    style: TextStyle(
+                      fontSize: 32.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primary,
                     ),
                   ),
-                ),
-                SizedBox(height: 10.h),
-                RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    text: "Forgot your password?   ",
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
+                  Text(
+                    'It’s great to see you again.',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primary500,
                     ),
-                    children: [
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            context.push(Routes.forgotPasswordPage);
-                          },
-                        text: "Reset your password",
-                        style: const TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                SizedBox(height: 24.h),
-                AuthButtonOtpSend(
-                  onTap: isFormValid ? _onLogin : null,
-                  text: 'Login',
-                  backgroundColor:
-                  isFormValid ? AppColors.primary400 : Colors.grey,
-                ),
-                SizedBox(height: 24.h),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Container(height: 1, color: AppColors.primary500)),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      child: Text(
-                        "or",
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: AppColors.primary500,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  SizedBox(height: 24.h),
+                  TextFieldAndText(
+                    controller: controllerEmail,
+                    text: "Email",
+                    hintText: 'Enter your email address',
+                    errorText: emailError,
+                  ),
+                  SizedBox(height: 16.h),
+                  TextFieldAndText(
+                    obscureText: !visiblePass,
+                    controller: controllerPassword,
+                    text: 'Password',
+                    hintText: 'Enter your password',
+                    errorText: passwordError,
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          visiblePass = !visiblePass;
+                        });
+                      },
+                      child: SvgPicture.asset(
+                        visiblePass ? AppIcons.eye : AppIcons.eyeOff,
+                        width: 24.w,
+                        height: 24.h,
+                        fit: BoxFit.scaleDown,
                       ),
                     ),
-                    Expanded(
-                        child: Container(height: 1, color: AppColors.primary500)),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                Center(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 341,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(color: AppColors.primary100),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppIcons.logosGoogleIcon),
-                              SizedBox(width: 10.w),
-                              Text(
-                                'Sign Up with Google',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16.sp,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 341,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(color: AppColors.primary100),
-                            color: AppColors.blue,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(AppIcons.logosFacebook),
-                              SizedBox(width: 10.w),
-                              Text(
-                                'Sign Up with Facebook',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16.sp,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                SizedBox(height: 164.h),
-                Center(
-                  child: RichText(
+                  SizedBox(height: 10.h),
+                  RichText(
+                    textAlign: TextAlign.start,
                     text: TextSpan(
-                      text: "Don’t have an account?  ",
+                      text: "Forgot your password?   ",
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
@@ -287,9 +181,9 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context.push(Routes.signUpPage);
+                              context.push(Routes.forgotPasswordPage);
                             },
-                          text: "Join",
+                          text: "Reset your password",
                           style: const TextStyle(
                             color: Colors.blue,
                             decoration: TextDecoration.underline,
@@ -298,12 +192,128 @@ class _LoginPageContentState extends State<_LoginPageContent> {
                       ],
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 24.h),
+                  AuthButtonOtpSend(
+                    onTap: (isFormValid && !isLoading) ? _onLogin : null,
+                    text: isLoading ? 'Yuklanmoqda...' : 'Login',
+                    backgroundColor: (isFormValid && !isLoading)
+                        ? AppColors.primary400
+                        : Colors.grey,
+                  ),
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Expanded(
+                          child:
+                          Container(height: 1, color: AppColors.primary500)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Text(
+                          "or",
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: AppColors.primary500,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          child:
+                          Container(height: 1, color: AppColors.primary500)),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Center(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 341,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(color: AppColors.primary100),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.logosGoogleIcon),
+                                SizedBox(width: 10.w),
+                                Text(
+                                  'Sign Up with Google',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.sp,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.h),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 341,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              border: Border.all(color: AppColors.primary100),
+                              color: AppColors.blue,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(AppIcons.logosFacebook),
+                                SizedBox(width: 10.w),
+                                Text(
+                                  'Sign Up with Facebook',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16.sp,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 164.h),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        text: "Don’t have an account?  ",
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.push(Routes.signUpPage);
+                              },
+                            text: "Join",
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:storeapp/core/routing/routes.dart';
 
 import '../../../core/utils/icons.dart';
 
 class AppBarWidgets extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarWidgets({super.key, required this.text});
+  const AppBarWidgets(
+      {super.key, required this.text, this.icon, this.onPressed});
 
   final String text;
+  final String? icon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => context.pop(),
         icon: SvgPicture.asset(AppIcons.backArrow),
       ),
       centerTitle: true,
@@ -25,8 +30,10 @@ class AppBarWidgets extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(AppIcons.bell),
+          onPressed: onPressed ?? () {
+            context.push(Routes.notificationPage);
+          },
+          icon: SvgPicture.asset(icon == null ? AppIcons.bell : icon!),
         ),
       ],
     );

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AddressState {
 
- Status get status; String? get errorMessage; List<AddressModel> get address;
+ Status get status; Status get createStatus; Status get deleteStatus; String? get errorMessage; List<AddressModel> get address;
 /// Create a copy of AddressState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AddressStateCopyWith<AddressState> get copyWith => _$AddressStateCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddressState&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other.address, address));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AddressState&&(identical(other.status, status) || other.status == status)&&(identical(other.createStatus, createStatus) || other.createStatus == createStatus)&&(identical(other.deleteStatus, deleteStatus) || other.deleteStatus == deleteStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other.address, address));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,errorMessage,const DeepCollectionEquality().hash(address));
+int get hashCode => Object.hash(runtimeType,status,createStatus,deleteStatus,errorMessage,const DeepCollectionEquality().hash(address));
 
 @override
 String toString() {
-  return 'AddressState(status: $status, errorMessage: $errorMessage, address: $address)';
+  return 'AddressState(status: $status, createStatus: $createStatus, deleteStatus: $deleteStatus, errorMessage: $errorMessage, address: $address)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AddressStateCopyWith<$Res>  {
   factory $AddressStateCopyWith(AddressState value, $Res Function(AddressState) _then) = _$AddressStateCopyWithImpl;
 @useResult
 $Res call({
- Status status, String? errorMessage, List<AddressModel> address
+ Status status, Status createStatus, Status deleteStatus, String? errorMessage, List<AddressModel> address
 });
 
 
@@ -62,9 +62,11 @@ class _$AddressStateCopyWithImpl<$Res>
 
 /// Create a copy of AddressState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? errorMessage = freezed,Object? address = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? createStatus = null,Object? deleteStatus = null,Object? errorMessage = freezed,Object? address = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,createStatus: null == createStatus ? _self.createStatus : createStatus // ignore: cast_nullable_to_non_nullable
+as Status,deleteStatus: null == deleteStatus ? _self.deleteStatus : deleteStatus // ignore: cast_nullable_to_non_nullable
 as Status,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
 as List<AddressModel>,
@@ -152,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  String? errorMessage,  List<AddressModel> address)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<AddressModel> address)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AddressState() when $default != null:
-return $default(_that.status,_that.errorMessage,_that.address);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.address);case _:
   return orElse();
 
 }
@@ -173,10 +175,10 @@ return $default(_that.status,_that.errorMessage,_that.address);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  String? errorMessage,  List<AddressModel> address)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<AddressModel> address)  $default,) {final _that = this;
 switch (_that) {
 case _AddressState():
-return $default(_that.status,_that.errorMessage,_that.address);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.address);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +195,10 @@ return $default(_that.status,_that.errorMessage,_that.address);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  String? errorMessage,  List<AddressModel> address)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  Status createStatus,  Status deleteStatus,  String? errorMessage,  List<AddressModel> address)?  $default,) {final _that = this;
 switch (_that) {
 case _AddressState() when $default != null:
-return $default(_that.status,_that.errorMessage,_that.address);case _:
+return $default(_that.status,_that.createStatus,_that.deleteStatus,_that.errorMessage,_that.address);case _:
   return null;
 
 }
@@ -208,10 +210,12 @@ return $default(_that.status,_that.errorMessage,_that.address);case _:
 
 
 class _AddressState implements AddressState {
-  const _AddressState({required this.status, this.errorMessage, required final  List<AddressModel> address}): _address = address;
+  const _AddressState({required this.status, required this.createStatus, required this.deleteStatus, this.errorMessage, required final  List<AddressModel> address}): _address = address;
   
 
 @override final  Status status;
+@override final  Status createStatus;
+@override final  Status deleteStatus;
 @override final  String? errorMessage;
  final  List<AddressModel> _address;
 @override List<AddressModel> get address {
@@ -231,16 +235,16 @@ _$AddressStateCopyWith<_AddressState> get copyWith => __$AddressStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddressState&&(identical(other.status, status) || other.status == status)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other._address, _address));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AddressState&&(identical(other.status, status) || other.status == status)&&(identical(other.createStatus, createStatus) || other.createStatus == createStatus)&&(identical(other.deleteStatus, deleteStatus) || other.deleteStatus == deleteStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&const DeepCollectionEquality().equals(other._address, _address));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,errorMessage,const DeepCollectionEquality().hash(_address));
+int get hashCode => Object.hash(runtimeType,status,createStatus,deleteStatus,errorMessage,const DeepCollectionEquality().hash(_address));
 
 @override
 String toString() {
-  return 'AddressState(status: $status, errorMessage: $errorMessage, address: $address)';
+  return 'AddressState(status: $status, createStatus: $createStatus, deleteStatus: $deleteStatus, errorMessage: $errorMessage, address: $address)';
 }
 
 
@@ -251,7 +255,7 @@ abstract mixin class _$AddressStateCopyWith<$Res> implements $AddressStateCopyWi
   factory _$AddressStateCopyWith(_AddressState value, $Res Function(_AddressState) _then) = __$AddressStateCopyWithImpl;
 @override @useResult
 $Res call({
- Status status, String? errorMessage, List<AddressModel> address
+ Status status, Status createStatus, Status deleteStatus, String? errorMessage, List<AddressModel> address
 });
 
 
@@ -268,9 +272,11 @@ class __$AddressStateCopyWithImpl<$Res>
 
 /// Create a copy of AddressState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? errorMessage = freezed,Object? address = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? createStatus = null,Object? deleteStatus = null,Object? errorMessage = freezed,Object? address = null,}) {
   return _then(_AddressState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Status,createStatus: null == createStatus ? _self.createStatus : createStatus // ignore: cast_nullable_to_non_nullable
+as Status,deleteStatus: null == deleteStatus ? _self.deleteStatus : deleteStatus // ignore: cast_nullable_to_non_nullable
 as Status,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,address: null == address ? _self._address : address // ignore: cast_nullable_to_non_nullable
 as List<AddressModel>,

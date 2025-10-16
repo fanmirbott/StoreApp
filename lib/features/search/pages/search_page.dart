@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:storeapp/core/routing/routes.dart';
+import 'package:storeapp/core/utils/colors.dart';
+import 'package:storeapp/core/utils/icons.dart';
+import 'package:storeapp/core/utils/status.dart';
+import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
-import 'package:storeapp/features/home/managers/product_view_model.dart';
-
-import '../../../core/utils/colors.dart';
-import '../../../core/utils/icons.dart';
+import 'package:storeapp/features/home/managers/product/product_bloc.dart';
+import 'package:storeapp/features/home/managers/product/product_state.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -32,32 +34,68 @@ class _SearchPageState extends State<SearchPage> {
     _searchController.dispose();
     super.dispose();
   }
+
   void _onSearchChanged() {
     final query = _searchController.text.trim();
     if (query.length >= 2 || query.isEmpty) {
-      context.read<ProductViewModel>().getProducts(title: query.isEmpty ? null : query);
+      context.read<ProductBloc>().add(
+        ProductLoading(title: query.isEmpty ? null : query),
+      );
     }
   }
 
-  Widget _buildProductList(ProductViewModel vm) {
-    if (vm.isLoading) {
+  Widget _buildProductList(ProductState state) {
+    if (state.status == Status.loading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (vm.products.isEmpty && _searchController.text.isNotEmpty) {
+    if (state.status == Status.error) {
+      return Center(
+        child: Text(
+          "Xatolik yuz berdi",
+          style: TextStyle(fontSize: 18.sp, color: Colors.red),
+        ),
+      );
+    }
+
+    if (state.products.isEmpty && _searchController.text.isNotEmpty) {
       return Center(
         child: Padding(
-          padding: EdgeInsets.only(top: 40.h, left: 24.w, right: 24.w),
-          child: Text(
-            '"${_searchController.text}" so‘rovi bo‘yicha mahsulot topilmadi.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18.sp, color: AppColors.primary),
+          padding: EdgeInsets.only(top: 116.h, left: 24.w, right: 24.w),
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                AppIcons.searchDuotone,
+                width: 64.w,
+                height: 64.h,
+              ),
+              SizedBox(height: 24.h,),
+              Text(
+                'No Results Found!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ),
+              SizedBox(height: 12.h,),
+              Text(
+                textAlign: TextAlign.center,
+                'Try a similar word or something more general.',
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: AppColors.primary500,
+                ),
+              ),
+            ],
           ),
         ),
       );
     }
 
-    if (vm.products.isEmpty && _searchController.text.isEmpty) {
+    if (state.products.isEmpty && _searchController.text.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -73,8 +111,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               const Spacer(),
               TextButton(
-                onPressed: (){
-                },
+                onPressed: () {},
                 child: Text(
                   'Clear all',
                   style: TextStyle(
@@ -97,17 +134,14 @@ class _SearchPageState extends State<SearchPage> {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemCount: vm.products.length,
+      itemCount: state.products.length,
       itemBuilder: (context, index) {
-        final product = vm.products[index];
+        final product = state.products[index];
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h),
           child: GestureDetector(
             onTap: () {
-              context.push(
-                Routes.productDetailPage,
-                extra: product.id,
-              );
+              context.push(Routes.productDetailPage, extra: product.id);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,7 +198,11 @@ class _SearchPageState extends State<SearchPage> {
                     ],
                   ),
                 ),
-                const Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.primary500),
+                const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                  color: AppColors.primary500,
+                ),
               ],
             ),
           ),
@@ -181,18 +219,18 @@ class _SearchPageState extends State<SearchPage> {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.primary,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.primary),
             ),
           ),
           SizedBox(width: 10.w),
           GestureDetector(
-            onTap: () {
-            },
-            child: const Icon(Icons.close, size: 20, color: AppColors.primary500),
-          )
+            onTap: () {},
+            child: const Icon(
+              Icons.close,
+              size: 20,
+              color: AppColors.primary500,
+            ),
+          ),
         ],
       ),
     );
@@ -201,74 +239,65 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Search',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: SvgPicture.asset(AppIcons.bell)),
-        ],
-      ),
-      body: Consumer<ProductViewModel>(
-        builder: (context, vm, child) => SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(right: 24.w, left: 24.w, top: 16.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          suffixIcon: InkWell(
-                            borderRadius: BorderRadius.circular(40.r),
-                            onTap: () {
-                              _searchController.clear();
-                            },
-                            child: SvgPicture.asset(
-                              AppIcons.mic,
+      appBar: AppBarWidgets(text: 'Search'),
+      body: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(right: 24.w, left: 24.w, top: 16.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            suffixIcon: InkWell(
+                              borderRadius: BorderRadius.circular(40.r),
+                              onTap: () {
+                                _searchController.clear();
+                              },
+                              child: SvgPicture.asset(
+                                AppIcons.mic,
+                                width: 24.w,
+                                height: 24.h,
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                            prefixIcon: SvgPicture.asset(
+                              AppIcons.search,
                               width: 24.w,
                               height: 24.h,
                               fit: BoxFit.scaleDown,
                             ),
-                          ),
-                          prefixIcon: SvgPicture.asset(
-                            AppIcons.search,
-                            width: 24.w,
-                            height: 24.h,
-                            fit: BoxFit.scaleDown,
-                          ),
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: AppColors.primary200,
-                          ),
-                          hintText: 'Search for clothes...',
-                          constraints: BoxConstraints(
-                            maxHeight: 52.h,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                            borderSide: BorderSide(
-                              color: AppColors.primary100,
-                              width: 0.1,
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              color: AppColors.primary200,
+                            ),
+                            hintText: 'Search for clothes...',
+                            constraints: BoxConstraints(maxHeight: 52.h),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: BorderSide(
+                                color: AppColors.primary100,
+                                width: 0.1,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                _buildProductList(vm),
-              ],
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  _buildProductList(state),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
       bottomNavigationBar: BottomNavigationBarApp(),
     );

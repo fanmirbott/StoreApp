@@ -10,7 +10,7 @@ class CartRepository {
 
   Future<Result<CartResponseModel>> getCartItems() async {
     final result = await _client.get<Map<String, dynamic>>(
-      '/my-cart/my-cart-items',
+      '/cart-items',
     );
     return result.fold(
       (error) => Result.error(error),
@@ -23,7 +23,7 @@ class CartRepository {
     required int sizeId,
   }) async {
     final result = await _client.post<dynamic>(
-      '/my-cart/add-item',
+      '/cart-items',
       data: {"productId": productId, "sizeId": sizeId},
     );
 
@@ -50,7 +50,7 @@ class CartRepository {
   }
 
   Future<Result<void>> deleteItemFromCart(int productId) async {
-    final result = await _client.delete<dynamic>('/my-cart/delete/$productId');
+    final result = await _client.delete<dynamic>('/cart-items/$productId');
     return result.fold(
       (error) => Result.error(error),
       (_) => Result.ok(null),

@@ -1,2 +1,1 @@
-enum Status { loading, success, error }
-// TODO Implement this library.
+enum Status {initial, loading, success, error }

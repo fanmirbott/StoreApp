@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/features/account/widgets/help_center_button.dart';
 import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
 
@@ -59,7 +61,11 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           spacing: 14,
           children: [
             ...List.generate(icons.length, (index){
-              return HelpCenterButton(icon: icons[index], text: textItems[index], onTap: () {  },);
+              return HelpCenterButton(icon: icons[index], text: textItems[index], onTap: () {
+                if (index == 0) {
+                  context.push(Routes.customServicePage);
+                }
+              },);
             })
           ],
         ),

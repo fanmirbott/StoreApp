@@ -5,6 +5,7 @@ import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/data/repositories/auth/reset_email_repository.dart';
 import 'package:storeapp/features/account/pages/address_page.dart';
+import 'package:storeapp/features/account/pages/custom_service_page.dart';
 import 'package:storeapp/features/account/pages/new_address_page.dart';
 import 'package:storeapp/features/account/pages/account_page.dart';
 import 'package:storeapp/features/account/pages/faqs_page.dart';
@@ -12,6 +13,7 @@ import 'package:storeapp/features/account/pages/help_center_page.dart';
 import 'package:storeapp/features/account/pages/my_details_page.dart';
 import 'package:storeapp/features/account/pages/my_orders_page.dart';
 import 'package:storeapp/features/account/pages/notifications_settings_page.dart';
+import 'package:storeapp/features/account/pages/track_order_page.dart';
 import 'package:storeapp/features/auth/managers/reset_email_view_model.dart';
 import 'package:storeapp/features/auth/pages/forgot_password_page.dart';
 import 'package:storeapp/features/auth/pages/login_page.dart';
@@ -33,7 +35,7 @@ import 'package:storeapp/features/search/pages/search_page.dart';
 import '../../features/Card/pages/payment_method_page.dart';
 
 final router = GoRouter(
-  initialLocation: Routes.splash,
+  initialLocation: Routes.loginPage,
   routes: [
     ShellRoute(
       builder: (context, state, child) => ChangeNotifierProvider(
@@ -153,6 +155,14 @@ final router = GoRouter(
     GoRoute(
       path: Routes.checkOutPage,
       builder: (context, state) => CheckOutPage(),
+    ),
+    GoRoute(
+      path: Routes.customServicePage,
+      builder: (context, state) => CustomServicePage(),
+    ),
+    GoRoute(
+      path: Routes.trackOrder,
+      builder: (context, state) => TrackOrderPage(),
     ),
   ],
 );

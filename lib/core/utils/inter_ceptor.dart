@@ -1,19 +1,24 @@
-import 'package:dio/dio.dart';
-import 'package:storeapp/core/utils/secure_storege.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final noAuthPaths = ["/auth/register", "/auth/login"];
+class AuthStorage {
+  static const _key = 'auth_token';
 
-    if (!noAuthPaths.any((path) => options.path.contains(path))) {
-      final token = await AuthStorage.getToken();
+  static Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, token);
+    print('Token saqlandi: $token');
+  }
 
-      if (token != null && token.isNotEmpty) {
-        options.headers["Authorization"] = "Bearer $token";
-      }
-    }
+  static Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(_key);
+    print('Token olindi: $token');
+    return token;
+  }
 
-    handler.next(options);
+  static Future<void> deleteToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key);
+    print('Token o‘chirildi');
   }
 }

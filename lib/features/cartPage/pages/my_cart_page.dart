@@ -7,9 +7,12 @@ import 'package:storeapp/core/routing/routes.dart';
 import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/core/utils/status.dart';
+import 'package:storeapp/features/common/widgets/app_bar_widgets.dart';
 import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
+import 'package:storeapp/features/home/managers/saved/saved_bloc.dart';
 import 'package:storeapp/features/home/widgets/counter_row_vidget.dart';
 import 'package:storeapp/features/home/widgets/build_price_widget.dart';
+import 'package:storeapp/features/saved/managers/savedBloc/saved_bloc.dart';
 import '../managers/cart/cart_bloc.dart';
 
 class MyCartPage extends StatefulWidget {
@@ -32,23 +35,7 @@ class _MyCartPageState extends State<MyCartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'My Cart',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: SvgPicture.asset(AppIcons.bell),
-          ),
-        ],
-      ),
-
+      appBar: AppBarWidgets(text: 'My Cart'),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<CartBloc>().add(const CartLoading());
@@ -75,36 +62,43 @@ class _MyCartPageState extends State<MyCartPage> {
             }
 
             if (state.cart == null || state.cart!.items.isEmpty) {
-              return Center(
-
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      AppIcons.cartDuotone,
-                      width: 64.w,
-                      height: 64.h,
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<SavedProductsBloc>().add(FetchSavedProducts());
+                },
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 69),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          AppIcons.cartDuotone,
+                          width: 64.w,
+                          height: 64.h,
+                        ),
+                        SizedBox(height: 20.h),
+                        Text(
+                          'Your Cart Is Empty!',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        SizedBox(height: 12.h),
+                        Text(
+                          'When you add products, they’ll appear here.',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.primary500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 20.h),
-                    Text(
-                      'Your Cart Is Empty!',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    SizedBox(height: 12.h),
-                    Text(
-                      'When you add products, they’ll appear here.',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primary500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               );
             }
@@ -217,7 +211,6 @@ class _MyCartPageState extends State<MyCartPage> {
                     value: "\$${cart.total}",
                   ),
                   const SizedBox(height: 25),
-
                   GestureDetector(
                     onTap: () => context.push(Routes.checkOutPage),
                     child: Container(

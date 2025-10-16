@@ -25,4 +25,6 @@ class Routes {
   static const addressPage = '/addressPage';
   static const newAddressPage = '/newAddressPage';
   static const checkOutPage = '/checkOutPage';
+  static const customServicePage = '/customServicePage';
+  static const trackOrder = '/trackOrder';
 }

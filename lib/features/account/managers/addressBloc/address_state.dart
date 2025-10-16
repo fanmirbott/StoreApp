@@ -8,12 +8,16 @@ part 'address_state.freezed.dart';
 abstract class AddressState with _$AddressState {
   const factory AddressState({
     required Status status,
+    required Status createStatus,
+    required Status deleteStatus,
     String? errorMessage,
     required List<AddressModel> address,
   }) = _AddressState;
 
   factory AddressState.initial() => AddressState(
-    status: Status.loading,
+    status: Status.initial,
+    createStatus: Status.initial,
+    deleteStatus: Status.initial,
     errorMessage: null,
     address: [],
   );

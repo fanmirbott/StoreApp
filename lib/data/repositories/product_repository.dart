@@ -11,15 +11,35 @@ class ProductRepository {
   Future<Result<List<ProductModel>>> getProducts({
     int? categoryId,
     String? title,
+    double? minPrice,
+    double? maxPrice,
+    int? orderBy,
+    int? sizeId,
   }) async {
     final Map<String, dynamic> queryParams = {};
 
     if (categoryId != null && categoryId != 0) {
-      queryParams['categoryId'] = categoryId.toString();
+      queryParams['CategoryId'] = categoryId.toString();
     }
 
     if (title != null && title.isNotEmpty) {
-      queryParams['title'] = title;
+      queryParams['Title'] = title;
+    }
+
+    if (minPrice != null) {
+      queryParams['MinPrice'] = minPrice.toInt().toString();
+    }
+
+    if (maxPrice != null) {
+      queryParams['MaxPrice'] = maxPrice.toInt().toString();
+    }
+
+    if (orderBy != null) {
+      queryParams['OrderBy'] = orderBy.toString();
+    }
+
+    if (sizeId != null) {
+      queryParams['SizeId'] = sizeId.toString();
     }
 
     final result = await _client.get<List<dynamic>>(
@@ -28,10 +48,10 @@ class ProductRepository {
     );
 
     return result.fold(
-      (error) => Result.error(error),
-      (data) {
+          (error) => Result.error(error),
+          (data) {
         try {
-          final products = (data)
+          final products = data
               .map((x) => ProductModel.fromJson(x as Map<String, dynamic>))
               .toList();
           return Result.ok(products);
@@ -50,8 +70,8 @@ class ProductRepository {
     );
 
     return result.fold(
-      (error) => Result.error(error),
-      (data) {
+          (error) => Result.error(error),
+          (data) {
         try {
           final products = data
               .map((e) => SavedProductModel.fromJson(e as Map<String, dynamic>))

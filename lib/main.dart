@@ -3,34 +3,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+import 'package:storeapp/core/dependencies.dart';
 import 'package:storeapp/core/routing/router.dart';
-import 'package:storeapp/data/repositories/address_repository.dart';
-import 'package:storeapp/data/repositories/notification_repository.dart';
-import 'package:storeapp/data/repositories/cart_repository.dart';
-import 'package:storeapp/data/repositories/product_detail_repository.dart';
-import 'package:storeapp/data/repositories/saved_repository.dart';
-import 'package:storeapp/features/account/managers/addressBloc/address_bloc.dart';
-import 'core/client.dart';
-import 'data/repositories/auth/user_repository.dart';
-import 'data/repositories/card_repository.dart';
-import 'data/repositories/product_repository.dart';
-import 'features/Card/managers/cards/card_bloc.dart';
-import 'features/account/managers/updateUserBloc/update_user_bloc.dart';
-import 'features/account/managers/userBloc/user_bloc.dart';
-import 'features/cartPage/managers/cart/cart_bloc.dart';
-import 'features/home/managers/product_view_model.dart';
-import 'features/home/managers/saved_view_model.dart';
-import 'features/saved/savedProduct/saved_bloc.dart';
+
+import 'core/utils/secure_storege.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final token = await AuthStorage.getToken();
+  print('Main token: $token');
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final token = await FirebaseMessaging.instance.getToken();
+  final tokenPhone = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.requestPermission();
-  print('telefon token🛑: ${token}');
-  runApp(MyApp());
+  print('telefon token🛑: $tokenPhone');
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -39,87 +26,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(create: (context) => ApiClient()),
-        RepositoryProvider(
-          create: (context) => NotificationRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) => ProductDetailRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) => SavedRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) => CartRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) => ProductRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) => CardRepository(client: context.read()),
-        ),
-        RepositoryProvider(
-          create: (context) =>
-              UserRepository(client: context.read<ApiClient>()),
-        ),
-        RepositoryProvider(
-          create: (context) => AddressRepository(client: context.read()),
-        ),
-      ],
+      providers: repositoryProviderMain,
       child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => CartBloc(
-              cartRepository: context.read<CartRepository>(),
-            )..add(CartLoading()),
-          ),
-          BlocProvider(
-            create: (context) => SavedProductsBloc(
-              savedRepo: context.read<ProductRepository>(),
-            )..add(FetchSavedProducts()),
-          ),
-          BlocProvider(
-            create: (context) => CardBloc(
-              cardRepo: context.read<CardRepository>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => UserBloc(
-              userRepository: context.read<UserRepository>(),
-            )..add(FetchUser()),
-          ),
-          BlocProvider(
-            create: (context) => UpdateUserBloc(
-              userRepository: context.read<UserRepository>(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => AddressBloc(
-              context.read(),
-              addressRepo: context.read<AddressRepository>(),
-            ),
-          ),
-        ],
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (context) => SavedViewModel(
-                repository: context.read<SavedRepository>(),
-              ),
-            ),
-            ChangeNotifierProvider(
-              create: (context) => ProductViewModel(
-                repository: context.read<ProductRepository>(),
-              )..getProducts(),
-            ),
-          ],
-          child: ScreenUtilInit(
-            designSize: Size(390, 844),
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: router,
-            ),
+        providers: providerBloc,
+        child: ScreenUtilInit(
+          designSize: const Size(390, 844),
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            routerConfig: router,
           ),
         ),
       ),

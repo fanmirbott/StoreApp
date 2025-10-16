@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:storeapp/core/utils/colors.dart';
 import 'package:storeapp/core/utils/icons.dart';
 import 'package:storeapp/core/utils/status.dart';
 import 'package:storeapp/data/models/notification_model.dart';
+import 'package:storeapp/features/common/widgets/bottom_navigation_bar_app.dart';
 import '../managers/notification/notification_bloc.dart';
 import '../managers/notification/notification_state.dart';
 
@@ -33,43 +36,91 @@ class NotificationPage extends StatelessWidget {
         body: BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
             switch (state.status) {
-              case Status.loading:
-                return const Center(child: CircularProgressIndicator());
+              case Status.initial:
+                return Center(child: CircularProgressIndicator());
               case Status.error:
                 return Center(
                   child: Text(state.errorMessage ?? "Something went wrong"),
                 );
-              case(Status.values == null):
-                return Column(
-                  children: [
-
-                  ],
+              case Status.success == null:
+                return Padding(
+                  padding: EdgeInsetsGeometry.symmetric(horizontal: 70),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcons.bellDuotone,
+                        width: 64.w,
+                        height: 64.h,
+                      ),
+                      SizedBox(
+                        height: 24.h,
+                      ),
+                      Text(
+                        textAlign: TextAlign.center,
+                        'You haven’t gotten any notifications yet!',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20.sp,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 12.h,
+                      ),
+                      Text(
+                        textAlign: TextAlign.center,
+                        'We’ll alert you when something cool happens.',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primary500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              case Status.loading:
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               case Status.success:
                 if (state.notifications.isEmpty) {
-                  return Center(
+                  return Padding(
+                    padding: EdgeInsetsGeometry.symmetric(horizontal: 70),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.notifications_none,
-                          size: 64,
-                          color: Colors.grey,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          AppIcons.bellDuotone,
+                          width: 64.w,
+                          height: 64.h,
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(
+                          height: 24.h,
+                        ),
                         Text(
-                          "You haven’t gotten any notifications yet!",
+                          textAlign: TextAlign.center,
+                          'You haven’t gotten any notifications yet!',
                           style: TextStyle(
-                            fontSize: 16,
                             fontWeight: FontWeight.w600,
+                            fontSize: 20.sp,
+                            color: AppColors.primary,
                           ),
-                          textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 8),
+                        SizedBox(
+                          height: 12.h,
+                        ),
                         Text(
-                          "We’ll alert you when something cool happens.",
-                          style: TextStyle(color: Colors.grey),
                           textAlign: TextAlign.center,
+                          'We’ll alert you when something cool happens.',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.primary500,
+                          ),
                         ),
                       ],
                     ),
@@ -128,9 +179,13 @@ class NotificationPage extends StatelessWidget {
                     );
                   },
                 );
+              case Status.loading:
+                // TODO: Handle this case.
+                throw UnimplementedError();
             }
           },
         ),
+        bottomNavigationBar: BottomNavigationBarApp(),
       ),
     );
   }
